@@ -1,0 +1,28 @@
+<div class="relative w-full  mx-auto overflow-hidden rounded-lg shadow-lg">
+<img
+  [src]="images[currentIndex]"
+  class="w-full object-cover object-center transition duration-700 ease-in-out"
+  alt="Imagen del carrusel"
+/>
+
+  <button
+    (click)="prev()"
+    class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full"
+  >
+    ‹
+  </button>
+  <button
+    (click)="next()"
+    class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full"
+  >
+    ›
+  </button>
+
+  <div class="absolute bottom-2 w-full flex justify-center gap-2">
+  <span
+    *ngFor="let img of images; let i = index"
+    class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+    [ngClass]="i === currentIndex ? 'bg-white' : 'bg-white/50'">
+  </span>
+  </div>
+</div>

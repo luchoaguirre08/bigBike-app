@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.glow-hover {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.glow-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(248, 136, 0, 0.39), rgba(7, 7, 7, 0.151));
+  transition: left 0.5s;
+  z-index: 0;
+}
+
+.glow-hover:hover::before {
+  left: 0;
+}
+
+.glow-hover:hover {
+  box-shadow: 0 10px 20px rgba(69, 70, 70, 0.71);
+}
+
+.glow-hover-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 20px rgba(69, 70, 70, 0.71);
+}
+
+/* .cards-products:hover> :not(:hover){
+  filter: blur(5px);
+  opacity: 0.9;
+} */

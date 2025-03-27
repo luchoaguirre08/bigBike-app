@@ -1,0 +1,67 @@
+<app-carousel></app-carousel>
+<div class="p-4 flex-1 flex flex-col justify-center items-center">
+  <p class="text-xl font-semibold text-sky-900">Nuestros servicios</p>
+</div>
+
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pe-20 ps-20 pt-5 cards-products">
+  <div
+    *ngFor="let product of products"
+    class="rounded-xl cursor-pointer mx-auto glow-hover-card h-full"
+    (click)="openModal(product)"
+  >
+    <div class="bg-white rounded-xl shadow-md overflow-hidden h-full flex flex-col">
+      <img
+        [src]="product.image"
+        alt="{{ product.name }}"
+        class="w-full object-cover rounded-t-xl"
+      />
+      <div class="p-4 glow-hover flex-1 flex flex-col justify-between">
+        <h3 class="text-base font-semibold text-sky-900">
+          {{ product.name }}
+        </h3>
+        <p class="text-gray-600 text-sm mt-2 leading-snug">
+          {{ product.shortDescription }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div
+  *ngIf="selectedProduct"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+>
+  <div class="bg-white rounded-xl max-w-xl w-full p-6 shadow-lg relative animate-fade-in">
+    <button
+      (click)="closeModal()"
+      class="absolute top-3 right-4 text-gray-500 hover:text-red-600 text-2xl"
+      aria-label="Cerrar"
+    >
+      &times;
+    </button>
+
+    <img
+      [src]="selectedProduct.image"
+      alt="{{ selectedProduct.name }}"
+      class="w-1/2 object-cover rounded-md mb-4"
+    />
+
+    <h2 class="text-2xl font-bold text-sky-900">{{ selectedProduct.name }}</h2>
+    <p class="text-gray-700 text-sm leading-relaxed mt-3 whitespace-pre-line">
+      {{ selectedProduct.fullDescription }}
+    </p>
+
+    <!-- Opcional: botón WhatsApp o carrito -->
+
+    <div class="mt-4 flex gap-3">
+      <a [href]="" target="_blank" class="bg-green-500 px-4 py-2 text-white rounded">WhatsApp</a>
+      <button class="bg-blue-600 px-4 py-2 text-white rounded">Agregar al carrito</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4">Citas</h2>
+
+   <!-- Grid de 3 columnas -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Columna Pendientes -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-center text-gray-700">Pendientes</h3>
+      <ng-container *ngIf="groupedAppointments['Pendiente'].length > 0; else sinPendientes">
+        <div
+          *ngFor="let a of groupedAppointments['Pendiente']"
+          class="p-4 m-2 rounded shadow border bg-gray-200 space-y-1"
+        >
+          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+          <p>Fecha: {{ a.date }}</p>
+          <p>Servicio: {{ a.product }}</p>
+          <p *ngIf="a.description">Descripción: {{ a.description }}</p>
+          <p>Precio: ${{ a.price }}</p>
+          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+
+          <div class="space-x-2 mt-2">
+            <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded">En progreso</button>
+            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded">Completado</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #sinPendientes>
+        <p class="text-sm text-gray-400 text-center">No hay citas pendientes.</p>
+      </ng-template>
+    </div>
+
+    <!-- Columna En progreso -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-center text-yellow-800">En progreso</h3>
+      <ng-container *ngIf="groupedAppointments['En progreso'].length > 0; else sinProgreso">
+        <div
+          *ngFor="let a of groupedAppointments['En progreso']"
+          class="p-4  m-2 rounded shadow border bg-yellow-100 space-y-1"
+        >
+          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+          <p>Fecha: {{ a.date }}</p>
+          <p>Servicio: {{ a.product }}</p>
+          <p *ngIf="a.description">Descripción: {{ a.description }}</p>
+          <p>Precio: ${{ a.price }}</p>
+          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+
+          <div class="space-x-2 mt-2">
+            <button (click)="update(a, 'Pendiente')" class="bg-gray-500 text-white px-2 py-1 rounded">Pendiente</button>
+            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded">Completado</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #sinProgreso>
+        <p class="text-sm text-gray-400 text-center">No hay citas en progreso.</p>
+      </ng-template>
+    </div>
+
+    <!-- Columna Completadas -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-center text-green-800">Completadas</h3>
+      <ng-container *ngIf="groupedAppointments['Completado'].length > 0; else sinCompletadas">
+        <div
+          *ngFor="let a of groupedAppointments['Completado']"
+          class="p-4 m-2  rounded shadow border bg-green-100 space-y-1"
+        >
+          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+          <p>Fecha: {{ a.date }}</p>
+          <p>Servicio: {{ a.product }}</p>
+          <p *ngIf="a.description">Descripción: {{ a.description }}</p>
+          <p>Precio: ${{ a.price }}</p>
+          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+
+          <div class="space-x-2 mt-2">
+            <button (click)="cobrar(a)" class="bg-blue-600 text-white px-2 py-1 rounded">Cobrar</button>
+            <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded">En progreso</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #sinCompletadas>
+        <p class="text-sm text-gray-400 text-center">No hay citas completadas.</p>
+      </ng-template>
+    </div>
+  </div>
+
+
+
+
+<!-- Pagos acordeón -->
+<div class="mt-8 border-t pt-4">
+  <button class="text-lg font-semibold mb-2 flex items-center gap-2" (click)="mostrarPagos = !mostrarPagos">
+    <span>💰 Pagos</span>
+    <span *ngIf="mostrarPagos">🔽</span>
+    <span *ngIf="!mostrarPagos">▶️</span>
+  </button>
+
+  <div *ngIf="mostrarPagos" class="mt-2">
+    <!-- Filtro por mes -->
+<div class="mb-4 max-w-xs">
+  <label class="block text-sm text-gray-700 mb-1">Filtrar por mes</label>
+  <input
+    type="month"
+    [(ngModel)]="filtroMes"
+    (change)="actualizarPagosFiltrados()"
+    class="w-full border rounded px-2 py-1"
+  />
+</div>
+    <div *ngIf="pagos.length === 0" class="text-sm text-gray-500">No hay pagos para este mes.</div>
+
+    <div *ngFor="let pago of pagos" class="border p-3 rounded shadow-sm mb-2 border p-4 rounded shadow mb-4 w-full max-w-3xl mx-auto">
+      <p><strong>{{ pago.name }}</strong> - ${{ pago.price || 0 }}</p>
+      <p>Fecha: {{ pago.date }}</p>
+      <p>Servicio: {{ pago.product }}</p>
+      <p *ngIf="pago.description">Descripción: {{ pago.description }}</p>
+      <p >Foto: {{ pago.imageUrl }}</p>
+    </div>
+
+    <div class="text-right font-bold mt-4">
+      Total: ${{ totalPagos }}
+    </div>
+  </div>
+</div>
+
+

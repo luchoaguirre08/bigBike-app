@@ -1,0 +1,133 @@
+<div class="max-w-2xl mx-auto mt-6 p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold mb-4 text-center">Agendar Cita</h2>
+
+ <form #appointmentForm="ngForm" (ngSubmit)="submit(appointmentForm)" class="space-y-4" novalidate>
+
+    <!-- Nombre -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': name.invalid && name.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z" />
+        </svg>
+
+        <input class="flex-1 outline-none" placeholder="Nombre" [(ngModel)]="form.name" name="name" required #name="ngModel" />
+      </div>
+      <p *ngIf="name.invalid && name.touched" class="text-red-500 text-sm mt-1">El nombre es obligatorio.</p>
+    </div>
+
+    <!-- Celular -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': phone.invalid && phone.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z" clip-rule="evenodd" />
+        </svg>
+
+        <input class="flex-1 outline-none" placeholder="Celular" [(ngModel)]="form.phone" name="phone" required #phone="ngModel" />
+      </div>
+      <p *ngIf="phone.invalid && phone.touched" class="text-red-500 text-sm mt-1">El celular es obligatorio.</p>
+    </div>
+
+    <!-- Fecha -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': date.invalid && date.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Z" />
+        </svg>
+
+        <input type="date" class="flex-1 outline-none" [(ngModel)]="form.date" name="date" required #date="ngModel" />
+      </div>
+      <p *ngIf="date.invalid && date.touched" class="text-red-500 text-sm mt-1">La fecha es obligatoria.</p>
+    </div>
+
+    <!-- Modelo bicicleta -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': bikeModel.invalid && bikeModel.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" />
+        </svg>
+
+        <input class="flex-1 outline-none" placeholder="Modelo bicicleta" [(ngModel)]="form.bikeModel" name="bikeModel" required #bikeModel="ngModel" />
+      </div>
+      <p *ngIf="bikeModel.invalid && bikeModel.touched" class="text-red-500 text-sm mt-1">El modelo es obligatorio.</p>
+    </div>
+
+    <!-- Producto -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': product.invalid && product.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a8 8 0 110 16 8 8 0 010-16zM8.707 7.293a1 1 0 00-1.414 1.414L9.586 11H7a1 1 0 000 2h4a1 1 0 001-1V8a1 1 0 10-2 0v2.586L8.707 7.293z" />
+        </svg>
+
+        <select class="flex-1 bg-transparent outline-none text-gray-700" [(ngModel)]="form.product" name="product" required #product="ngModel">
+          <option disabled selected value="">Selecciona un producto</option>
+          <option *ngFor="let p of products" [value]="p.name">{{ p.name }} - ${{ p.price }}</option>
+        </select>
+      </div>
+      <p *ngIf="product.invalid && product.touched" class="text-red-500 text-sm mt-1">Selecciona un producto.</p>
+    </div>
+
+    <!-- Precio -->
+    <div>
+      <div class="flex items-center gap-2 border rounded px-3 py-2"
+           [ngClass]="{ 'border-red-500': price.invalid && price.touched }">
+        <!-- Icono -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5 10a5 5 0 0110 0 5 5 0 01-10 0z" />
+        </svg>
+
+        <input
+          type="number"
+          class="flex-1 outline-none"
+          placeholder="Precio"
+          [(ngModel)]="form.price"
+          name="price"
+          required
+          #price="ngModel"
+        />
+      </div>
+      <p *ngIf="price.invalid && price.touched" class="text-red-500 text-sm mt-1">El precio es obligatorio.</p>
+    </div>
+<div>
+  <label class="block mb-1 font-medium text-gray-700">Foto de la bicicleta (opcional)</label>
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    (change)="onImageSelected($event)"
+    class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+  />
+  <div *ngIf="previewImage" class="mt-2">
+  <p class="text-sm text-gray-500 mb-1">Vista previa:</p>
+  <img [src]="previewImage" alt="Vista previa" class="rounded max-h-40 object-contain border" />
+</div>
+</div>
+    <!-- Descripción (opcional) -->
+    <div class="border rounded px-3 py-2">
+      <textarea class="w-full outline-none" rows="3" placeholder="Descripción (opcional)" [(ngModel)]="form.description" name="description"></textarea>
+    </div>
+
+    <!-- Botón -->
+    <button
+      type="submit"
+      [disabled]="!appointmentForm.valid"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4v16m8-8H4" />
+      </svg>
+      Agendar cita
+    </button>
+
+  </form>
+</div>
