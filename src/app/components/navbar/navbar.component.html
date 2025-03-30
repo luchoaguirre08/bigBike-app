@@ -99,7 +99,8 @@
   </div>
 
   <!-- Menú móvil -->
-  <div *ngIf="isMenuOpen" class="md:hidden mt-4 flex flex-col gap-4 text-lg font-medium">
+ <div *ngIf="isMenuOpen" class="md:hidden mt-4 flex flex-col items-end gap-4 text-lg font-medium text-right pr-4">
+
     <a (click)="closeMenu()" routerLink="/" [routerLinkActiveOptions]="{ exact: true }"
        routerLinkActive="text-sky-300"
        class="flex items-center gap-2 hover:text-sky-300">
@@ -136,7 +137,9 @@
       Citas
     </a>
 
-    <div class="flex items-center gap-2 mt-2">
+
+  </div>
+  <div *ngIf="isMenuOpen" class="flex items-center gap-2 mt-2">
       <ng-container *ngIf="user(); else mobileLoginLink">
         <span class="text-sm italic text-sky-200">{{ user()?.email }}</span>
         <button
@@ -159,5 +162,4 @@
         </a>
       </ng-template>
     </div>
-  </div>
 </nav>
