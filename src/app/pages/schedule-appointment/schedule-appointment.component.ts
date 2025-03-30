@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms'; // 👈 importante
 import { AppointmentService } from 'src/app/services/appointment.service';
@@ -32,6 +32,7 @@ export class ScheduleAppointmentComponent {
     imageUrl: '', // 👈 nuevo campo
     status: 'Pendiente',
   };
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   storage = getStorage(); // Esto crea una instancia del Storage
   historialCliente: any;
   // Lista de productos
@@ -74,6 +75,7 @@ export class ScheduleAppointmentComponent {
       console.error('Error al agendar cita', error);
       Swal.fire('❌ Error', 'Hubo un problema al agendar la cita', 'error');
     }
+    this.fileInput.nativeElement.value = '';
   }
 
   selectedImageFile: File | null = null;
