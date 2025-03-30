@@ -22,10 +22,9 @@ export class BuscarQrClienteComponent {
     const snap = await getDoc(ref);
 
     if (snap.exists()) {
-    const data = snap.data() as { qrUrl: string; name: string }; // 👈 Indicamos el tipo esperado
-    this.qrUrl = data.qrUrl;
-    this.clienteNombre = data.name;
-
+      const data = snap.data() as { qrUrl: string; name: string }; // 👈 Indicamos el tipo esperado
+      this.qrUrl = data.qrUrl;
+      this.clienteNombre = data.name;
     } else {
       this.qrUrl = '';
       this.clienteNombre = '';
@@ -34,10 +33,8 @@ export class BuscarQrClienteComponent {
   }
 
   imprimirQR() {
-    const canvas = document.querySelector('qrcode canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    if (!this.qrUrl) return;
 
-    const imageData = canvas.toDataURL('image/png');
     const printWindow = window.open('', '_blank');
 
     if (printWindow) {
@@ -78,28 +75,27 @@ export class BuscarQrClienteComponent {
           </style>
         </head>
         <body>
-          <img src="${imageData}" alt="Código QR" />
+          <img src="${this.qrUrl}" alt="Código QR" onload="window.print(); window.onafterprint = () => window.close();" />
         </body>
       </html>
     `);
 
       doc.close();
-
-      // Esperar a que la imagen cargue antes de imprimir
-      printWindow.onload = () => {
-        printWindow.focus();
-        printWindow.print();
-        // Opcional: cerrar después de imprimir
-        printWindow.onafterprint = () => printWindow.close();
-      };
     }
   }
 
   descargarQR() {
     if (!this.qrUrl) return;
-    const link = document.createElement('a');
-    link.href = this.qrUrl;
-    link.download = `${this.documento}_qr.png`;
-    link.click();
+
+    // Abre el QR en una nueva pestaña
+    window.open(this.qrUrl, '_blank');
+
+    // Muestra alerta con instrucciones
+    Swal.fire({
+      icon: 'info',
+      title: 'Imagen abierta',
+      text: 'Haz clic derecho sobre la imagen y selecciona "Guardar como..." para descargarla.',
+      confirmButtonText: 'Entendido',
+    });
   }
 }
