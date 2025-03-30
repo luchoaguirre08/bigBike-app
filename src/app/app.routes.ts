@@ -7,21 +7,49 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegistroClienteComponent } from './pages/registro-cliente/registro-cliente.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent },
+  // 🔁 Redirección al home
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+
+  // 🏠 Home
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
+
+  // 🔐 Login
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+
+  // 🧾 Registro de cliente (requiere autenticación)
   {
     path: 'registro',
     component: RegistroClienteComponent,
     canActivate: [authGuard],
   },
+
+  // 📅 Agendar cita (requiere autenticación)
   {
     path: 'agendar',
     component: ScheduleAppointmentComponent,
     canActivate: [authGuard],
   },
+
+  // 📋 Ver citas (requiere autenticación)
   {
     path: 'citas',
     component: ViewAppointmentsComponent,
     canActivate: [authGuard],
+  },
+
+  // 🚫 Página no encontrada (opcional)
+  {
+    path: '**',
+    redirectTo: 'home',
   },
 ];
