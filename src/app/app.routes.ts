@@ -10,13 +10,13 @@ export const routes: Routes = [
   // 🔁 Redirección al home
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '',
     pathMatch: 'full',
   },
 
   // 🏠 Home
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
   },
 
