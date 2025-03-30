@@ -54,6 +54,18 @@ export class ScheduleAppointmentComponent {
   }
 
   async submit(appointmentForm: NgForm) {
+    const { isConfirmed } = await Swal.fire({
+      title: '¿Confirmar cita?',
+      text: '¿Estás seguro de que deseas agendar esta cita?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, agendar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    });
+
+    if (!isConfirmed) return;
     try {
       let imageUrl = '';
       if (this.selectedImageFile) {

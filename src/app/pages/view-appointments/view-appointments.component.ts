@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-view-appointments',
@@ -54,15 +55,43 @@ export class ViewAppointmentsComponent {
   }
 
   async update(appointment: Appointment, nuevoEstado: Appointment['status']) {
-    appointment.status = nuevoEstado;
-    await this.appointmentService.updateAppointment(appointment);
-    await this.loadAppointments();
+    const { isConfirmed } = await Swal.fire({
+      title: '¿Cambiar estado?',
+      text: `¿Deseas cambiar el estado a "${nuevoEstado}"?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    });
+
+    if (isConfirmed) {
+      appointment.status = nuevoEstado;
+      await this.appointmentService.updateAppointment(appointment);
+      await this.loadAppointments();
+      Swal.fire('✅ Estado actualizado', '', 'success');
+    }
   }
 
   async cobrar(appointment: Appointment) {
-    appointment.status = 'Pagado';
-    await this.appointmentService.updateAppointment(appointment);
-    await this.loadAppointments();
+    const { isConfirmed } = await Swal.fire({
+      title: '¿Marcar como pagado?',
+      text: `Esta acción marcará la cita como "Pagado".`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cobrar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    });
+
+    if (isConfirmed) {
+      appointment.status = 'Pagado';
+      await this.appointmentService.updateAppointment(appointment);
+      await this.loadAppointments();
+      Swal.fire('💰 Cita cobrada', '', 'success');
+    }
   }
 
   get totalPagos(): number {
@@ -80,6 +109,26 @@ export class ViewAppointmentsComponent {
   cerrarModalImagen() {
     this.mostrarModalImagen = false;
     this.imagenModalUrl = null;
+  }
+  enviarWhatsapp(nombre: string, telefono: string) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Quieres notificar a ${nombre} que su bicicleta ya está lista?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, enviar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const mensaje = `Hola ${nombre}, tu bicicleta ya está lista. ¡Te esperamos en el taller! 🚴‍♂️🔧`;
+        const url = `https://wa.me/57${telefono}?text=${encodeURIComponent(
+          mensaje
+        )}`;
+        window.open(url, '_blank');
+      }
+    });
   }
 }
 

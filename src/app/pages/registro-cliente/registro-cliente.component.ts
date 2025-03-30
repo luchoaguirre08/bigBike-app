@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { QrGeneratorComponent } from 'src/app/components/qr-generator/qr-generator.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-cliente',
@@ -19,7 +20,19 @@ export class RegistroClienteComponent {
   @ViewChild(QrGeneratorComponent) qrGen!: QrGeneratorComponent;
 
   async guardarCliente(form: NgForm) {
-    const datosQR = {
+    const { isConfirmed } = await Swal.fire({
+    title: '¿Registrar cliente?',
+    text: 'Se generará un código QR con los datos del cliente.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, guardar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+  });
+
+  if (!isConfirmed) return;
+  const datosQR = {
       id: this.cliente.id,
       name: this.cliente.name,
       phone: this.cliente.phone,
