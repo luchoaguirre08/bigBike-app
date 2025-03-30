@@ -5,16 +5,24 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { Appointment } from 'src/app/models/appointment';
 import Swal from 'sweetalert2';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { RegistroClienteComponent } from '../registro-cliente/registro-cliente.component';
+import { EscanearClienteComponent } from 'src/app/components/escanear-cliente/escanear-cliente.component';
 @Component({
   selector: 'app-schedule-appointment',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RegistroClienteComponent,
+    EscanearClienteComponent,
+  ],
   templateUrl: './schedule-appointment.component.html',
   styleUrls: ['./schedule-appointment.component.css'],
 })
 export class ScheduleAppointmentComponent {
   form: Appointment = {
     name: '',
+    cedula: '',
     phone: '',
     date: '',
     bikeModel: '',
@@ -25,7 +33,7 @@ export class ScheduleAppointmentComponent {
     status: 'Pendiente',
   };
   storage = getStorage(); // Esto crea una instancia del Storage
-
+  historialCliente: any;
   // Lista de productos
   products = [
     { name: 'Mantenimiento suspensión', price: 50000 },
@@ -39,10 +47,9 @@ export class ScheduleAppointmentComponent {
     );
   }
   constructor(private appointmentService: AppointmentService) {}
-  // Agrega esta función dentro del componente
-  onProductChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-    console.log('Producto seleccionado:', value);
+  onProductChange() {
+    const selected = this.products.find((p) => p.name === this.form.product);
+    this.form.price = selected?.price ?? 0;
   }
 
   async submit(appointmentForm: NgForm) {
@@ -60,8 +67,7 @@ export class ScheduleAppointmentComponent {
 
       Swal.fire('✅ Éxito', 'Cita agendada correctamente', 'success');
 
-      // Limpiar formulario y estado
-      appointmentForm.resetForm(); // ✅ Borra campos y sus estados
+      appointmentForm.resetForm();
       this.selectedImageFile = null;
       this.previewImage = null;
     } catch (error) {
@@ -77,14 +83,13 @@ export class ScheduleAppointmentComponent {
     const file: File = event.target.files[0];
     if (!file) return;
 
-    // Vista previa
     const reader = new FileReader();
     reader.onload = () => {
       this.previewImage = reader.result as string;
     };
     reader.readAsDataURL(file);
 
-    this.selectedImageFile = file; // ✅ ahora sí se asigna
+    this.selectedImageFile = file;
 
     try {
       const filePath = `citas/${Date.now()}_${file.name}`;
@@ -96,6 +101,58 @@ export class ScheduleAppointmentComponent {
       console.log('Imagen subida correctamente:', downloadURL);
     } catch (error) {
       console.error('Error al subir la imagen', error);
+    }
+  }
+
+  // historialCliente: Appointment[] = [];
+
+  // onQrScanned(documentId: string) {
+  //   this.form.cedula = documentId; // ✅ Llena el campo
+  //   this.form.name = documentId;
+  //   this.form.phone = documentId;
+  //   this.appointmentService
+  //     .getClientHistory(documentId)
+  //     .then((appointments) => {
+  //       if (appointments.length > 0) {
+  //         const last = appointments[appointments.length - 1];
+  //         this.form.name = last.name;
+  //         this.form.phone = last.phone;
+  //         this.form.bikeModel = last.bikeModel;
+
+  //         this.historialCliente = appointments;
+  //       } else {
+  //         Swal.fire(
+  //           '⚠️ No se encontró historial',
+  //           'Este cliente aún no tiene citas registradas',
+  //           'info'
+  //         );
+  //       }
+  //     });
+  // }
+  onQrScanned(documentId: string) {
+    try {
+      const cliente = JSON.parse(documentId);
+
+      this.form.cedula = cliente.id;
+      this.form.name = cliente.name;
+      this.form.phone = cliente.phone;
+
+      this.appointmentService
+        .getClientHistory(cliente.id)
+        .then((appointments) => {
+          this.historialCliente = appointments;
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Cliente encontrado',
+            text: `Se cargó la información de ${cliente.name} y su historial.`,
+            timer: 2500,
+            showConfirmButton: false,
+          });
+        });
+    } catch (error) {
+      console.error('QR inválido', error);
+      Swal.fire('❌ Error', 'El código QR no es válido', 'error');
     }
   }
 }

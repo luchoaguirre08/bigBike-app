@@ -11,12 +11,28 @@
           *ngFor="let a of groupedAppointments['Pendiente']"
           class="p-4 m-2 rounded shadow border bg-gray-200 space-y-1"
         >
-          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+         <div class="flex items-start gap-4">
+  <!-- Texto del pago -->
+  <div class="flex-1">
+   <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
           <p>Fecha: {{ a.date }}</p>
           <p>Servicio: {{ a.product }}</p>
           <p *ngIf="a.description">Descripción: {{ a.description }}</p>
           <p>Precio: ${{ a.price }}</p>
-          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+  </div>
+
+  <!-- Imagen -->
+  <div>
+     <img
+    [src]="a.imageUrl"
+    alt="QR del cliente"
+    class="w-24 object-contain rounded shadow cursor-pointer"
+    *ngIf="a.imageUrl"
+    (click)="abrirModalImagen(a.imageUrl)"
+  />
+
+  </div>
+</div>
 
           <div class="space-x-2 mt-2">
             <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded">En progreso</button>
@@ -37,12 +53,28 @@
           *ngFor="let a of groupedAppointments['En progreso']"
           class="p-4  m-2 rounded shadow border bg-yellow-100 space-y-1"
         >
-          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+          <div class="flex items-start gap-4">
+  <!-- Texto del pago -->
+  <div class="flex-1">
+   <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
           <p>Fecha: {{ a.date }}</p>
           <p>Servicio: {{ a.product }}</p>
           <p *ngIf="a.description">Descripción: {{ a.description }}</p>
           <p>Precio: ${{ a.price }}</p>
-          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+  </div>
+
+  <!-- Imagen -->
+  <div>
+     <img
+    [src]="a.imageUrl"
+    alt="QR del cliente"
+    class="w-24 object-contain rounded shadow cursor-pointer"
+    *ngIf="a.imageUrl"
+    (click)="abrirModalImagen(a.imageUrl)"
+  />
+
+  </div>
+</div>
 
           <div class="space-x-2 mt-2">
             <button (click)="update(a, 'Pendiente')" class="bg-gray-500 text-white px-2 py-1 rounded">Pendiente</button>
@@ -63,12 +95,28 @@
           *ngFor="let a of groupedAppointments['Completado']"
           class="p-4 m-2  rounded shadow border bg-green-100 space-y-1"
         >
-          <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
+         <div class="flex items-start gap-4">
+  <!-- Texto del pago -->
+  <div class="flex-1">
+   <p><strong>{{ a.name }}</strong> ({{ a.bikeModel }})</p>
           <p>Fecha: {{ a.date }}</p>
           <p>Servicio: {{ a.product }}</p>
           <p *ngIf="a.description">Descripción: {{ a.description }}</p>
           <p>Precio: ${{ a.price }}</p>
-          <p *ngIf="a.imageUrl">Foto: ${{ a.imageUrl }}</p>
+  </div>
+
+  <!-- Imagen -->
+  <div>
+     <img
+    [src]="a.imageUrl"
+    alt="QR del cliente"
+    class="w-24 object-contain rounded shadow cursor-pointer"
+    *ngIf="a.imageUrl"
+    (click)="abrirModalImagen(a.imageUrl)"
+  />
+
+  </div>
+</div>
 
           <div class="space-x-2 mt-2">
             <button (click)="cobrar(a)" class="bg-blue-600 text-white px-2 py-1 rounded">Cobrar</button>
@@ -107,11 +155,27 @@
     <div *ngIf="pagos.length === 0" class="text-sm text-gray-500">No hay pagos para este mes.</div>
 
     <div *ngFor="let pago of pagos" class="border p-3 rounded shadow-sm mb-2 border p-4 rounded shadow mb-4 w-full max-w-3xl mx-auto">
-      <p><strong>{{ pago.name }}</strong> - ${{ pago.price || 0 }}</p>
-      <p>Fecha: {{ pago.date }}</p>
-      <p>Servicio: {{ pago.product }}</p>
-      <p *ngIf="pago.description">Descripción: {{ pago.description }}</p>
-      <p >Foto: {{ pago.imageUrl }}</p>
+<div class="flex items-start gap-4">
+  <!-- Texto del pago -->
+  <div class="flex-1">
+    <p><strong>{{ pago.name }}</strong> - ${{ pago.price || 0 }}</p>
+    <p>Fecha: {{ pago.date }}</p>
+    <p>Servicio: {{ pago.product }}</p>
+    <p *ngIf="pago.description">Descripción: {{ pago.description }}</p>
+  </div>
+
+  <!-- Imagen -->
+  <div>
+    <img
+  [src]="pago.imageUrl"
+  alt="QR del cliente"
+  class="w-32 object-contain rounded shadow cursor-pointer"
+  *ngIf="pago.imageUrl"
+  (click)="abrirModalImagen(pago.imageUrl)"
+/>
+
+  </div>
+</div>
     </div>
 
     <div class="text-right font-bold mt-4">
@@ -121,3 +185,28 @@
 </div>
 
 
+
+
+<!-- Modal de imagen pequeño -->
+<div
+  *ngIf="mostrarModalImagen"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+  (click)="cerrarModalImagen()"
+>
+  <div
+    class="bg-white rounded-xl max-w-xl w-full p-6 shadow-lg relative animate-fade-in"
+    (click)="$event.stopPropagation()"
+  >
+    <button
+      class="absolute top-1 right-2 text-gray-500 hover:text-black text-lg"
+      (click)="cerrarModalImagen()"
+    >
+      ✖
+    </button>
+    <img
+      [src]="imagenModalUrl"
+      alt="Imagen ampliada"
+      class="w-full h-auto rounded object-contain"
+    />
+  </div>
+</div>

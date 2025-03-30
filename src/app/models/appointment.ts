@@ -1,5 +1,6 @@
 export interface Appointment {
   id?: string;
+  cedula:string;
   name: string;
   phone: string;
   date: string;

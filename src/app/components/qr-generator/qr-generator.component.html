@@ -1,0 +1,10 @@
+<div class="text-center">
+      <qrcode [qrdata]="value" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+      <button (click)="downloadQR()" class="mt-4 bg-blue-600 text-white px-3 py-2 rounded">
+        Descargar QR
+      </button>
+
+      <button (click)="printQR()" class="bg-green-600 text-white px-3 py-2 rounded ms-4 ">
+      Imprimir QR
+    </button>
+    </div>

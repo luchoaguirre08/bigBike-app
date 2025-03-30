@@ -68,6 +68,19 @@ export class ViewAppointmentsComponent {
   get totalPagos(): number {
     return this.pagos.reduce((acc, a) => acc + (a.price || 0), 0);
   }
+
+  imagenModalUrl: string | null = null;
+  mostrarModalImagen = false;
+
+  abrirModalImagen(url: string) {
+    this.imagenModalUrl = url;
+    this.mostrarModalImagen = true;
+  }
+
+  cerrarModalImagen() {
+    this.mostrarModalImagen = false;
+    this.imagenModalUrl = null;
+  }
 }
 
 
