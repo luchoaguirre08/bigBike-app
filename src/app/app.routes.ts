@@ -5,6 +5,7 @@ import { ViewAppointmentsComponent } from './pages/view-appointments/view-appoin
 import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { RegistroClienteComponent } from './pages/registro-cliente/registro-cliente.component';
+import { HistorialUsuarioComponent } from './pages/historial-usuario/historial-usuario.component';
 
 export const routes: Routes = [
   // 🔁 Redirección al home
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  // 🔐 Login
+  {
+    path: 'historial',
+    component: HistorialUsuarioComponent,
   },
 
   // 🧾 Registro de cliente (requiere autenticación)
