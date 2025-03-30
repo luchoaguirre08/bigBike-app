@@ -4,11 +4,12 @@ import { QrGeneratorComponent } from 'src/app/components/qr-generator/qr-generat
 import { FormsModule, NgForm } from '@angular/forms';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { BuscarQrClienteComponent } from 'src/app/components/buscar-qr-cliente/buscar-qr-cliente.component';
 
 @Component({
   selector: 'app-registro-cliente',
   standalone: true,
-  imports: [CommonModule, QrGeneratorComponent, FormsModule],
+  imports: [CommonModule, QrGeneratorComponent, FormsModule, BuscarQrClienteComponent],
   templateUrl: './registro-cliente.component.html',
   styles: [],
 })
@@ -42,8 +43,9 @@ export class RegistroClienteComponent {
     this.documentoCliente = JSON.stringify(datosQR);
 this.showButtons=true;
     try {
+       await new Promise((resolve) => setTimeout(resolve, 500));
       const qrUrl = await this.qrGen.uploadQRToFirebase(this.cliente.id);
-
+console.log("url", qrUrl)
       const clienteCompleto = {
         ...this.cliente,
         qrUrl: qrUrl || '',
