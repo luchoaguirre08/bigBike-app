@@ -14,9 +14,16 @@ export class EscanearClienteComponent {
   mostrarScanner = false;
   @Output() codeScanned = new EventEmitter<string>();
 
+  isProcessing = false;
+
   onCodeResult(result: string) {
+    if (this.isProcessing) return; // evitar doble lectura
+
+    this.isProcessing = true;
     this.codeScanned.emit(result);
-    console.log('QR escaneado', this.codeScanned.emit(result));
+    this.mostrarScanner = false;
+
+    setTimeout(() => (this.isProcessing = false), 1000); // espera 1 seg para permitir escaneo de nuevo
   }
   toggleScanner() {
     this.mostrarScanner = !this.mostrarScanner;
