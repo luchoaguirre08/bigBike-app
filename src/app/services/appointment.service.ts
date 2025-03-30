@@ -38,4 +38,11 @@ export class AppointmentService {
     const ref = doc(db, 'appointments', id);
     return await deleteDoc(ref);
   }
+
+  async getClientHistory(documentId: string): Promise<Appointment[]> {
+    const snapshot = await getDocs(this.appointmentCollection);
+    return snapshot.docs
+      .map((doc) => ({ id: doc.id, ...doc.data() } as Appointment))
+      .filter((cita) => cita.cedula === documentId); // 👈 este campo lo debes tener
+  }
 }
