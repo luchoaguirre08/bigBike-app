@@ -90,9 +90,8 @@ export class ScheduleAppointmentComponent {
       await this.appointmentService.addAppointment(cita);
 
       Swal.fire('✅ Éxito', 'Cita agendada correctamente', 'success');
-
-      appointmentForm.resetForm();
       this.form.servicios = [];
+      appointmentForm.resetForm();
       this.selectedImageFile = null;
       this.previewImage = null;
     } catch (error) {
