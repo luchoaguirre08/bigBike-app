@@ -84,6 +84,7 @@
       <label class="flex items-center gap-2">
         <input
           type="checkbox"
+          [checked]="form.servicios.includes(p)"
           [value]="p"
           (change)="toggleServicio(p, $event)"
           class="accent-blue-600"
