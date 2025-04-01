@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
   isMenuOpen = false;

@@ -18,9 +18,16 @@
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
           <p> <strong>Fecha: </strong>  {{ a.date }}</p>
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
-          <p> <strong>Servicio: </strong> {{ a.product }}</p>
+          <div>
+            <strong>Servicios:</strong>
+            <ul class="list-disc list-inside">
+              <li *ngFor="let servicio of a.servicios">
+                {{ servicio.name }} - ${{ servicio.price | number:'1.0-0' }}
+              </li>
+            </ul>
+          </div>
           <p *ngIf="a.description"> <strong> Descripción: </strong>{{ a.description }}</p>
-          <p> <strong>Precio: </strong> ${{ a.price }}</p>
+          <p> <strong>Total: </strong> ${{ a.price  | number:'1.0-0' }}</p>
   </div>
 
   <!-- Imagen -->
@@ -62,9 +69,16 @@
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
           <p> <strong>Fecha: </strong>  {{ a.date }}</p>
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
-          <p> <strong>Servicio: </strong> {{ a.product }}</p>
+         <div>
+            <strong>Servicios:</strong>
+            <ul class="list-disc list-inside">
+              <li *ngFor="let servicio of a.servicios">
+                {{ servicio.name }} - ${{ servicio.price | number:'1.0-0' }}
+              </li>
+            </ul>
+          </div>
           <p *ngIf="a.description"> <strong> Descripción: </strong>{{ a.description }}</p>
-          <p> <strong>Precio: </strong> ${{ a.price }}</p>
+          <p> <strong>Total: </strong> ${{ a.price  | number:'1.0-0' }}</p>
   </div>
 
   <!-- Imagen -->
@@ -106,9 +120,16 @@
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
           <p> <strong>Fecha: </strong>  {{ a.date }}</p>
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
-          <p> <strong>Servicio: </strong> {{ a.product }}</p>
+         <div>
+            <strong>Servicios:</strong>
+            <ul class="list-disc list-inside">
+              <li *ngFor="let servicio of a.servicios">
+                {{ servicio.name }} - ${{ servicio.price | number:'1.0-0' }}
+              </li>
+            </ul>
+          </div>
           <p *ngIf="a.description"> <strong> Descripción: </strong>{{ a.description }}</p>
-          <p> <strong>Precio: </strong> ${{ a.price }}</p>
+          <p> <strong>Total: </strong> ${{ a.price  | number:'1.0-0' }}</p>
   </div>
 
   <!-- Imagen -->
@@ -167,10 +188,19 @@
 <div class="flex items-start gap-4">
   <!-- Texto del pago -->
   <div class="flex-1">
-    <p><strong>{{ pago.name }}</strong> - ${{ pago.price || 0 }}</p>
-    <p>Fecha: {{ pago.date }}</p>
-    <p>Servicio: {{ pago.product }}</p>
-    <p *ngIf="pago.description">Descripción: {{ pago.description }}</p>
+    <p> <strong>Cliente: </strong> {{ pago.name }}  </p>
+    <p><strong>Documento:</strong> {{ pago.cedula }}</p>
+    <p> <strong>Fecha:</strong> {{ pago.date }}</p>
+    <div>
+            <strong>Servicios:</strong>
+            <ul class="list-disc list-inside">
+              <li *ngFor="let servicio of pago.servicios">
+                {{ servicio.name }} - ${{ servicio.price | number:'1.0-0' }}
+              </li>
+            </ul>
+          </div>
+          <p *ngIf="pago.description"> <strong> Descripción: </strong>{{ pago.description }}</p>
+          <p> <strong>Total: </strong> ${{ pago.price  | number:'1.0-0' }}</p>
   </div>
 
   <!-- Imagen -->
@@ -188,7 +218,7 @@
     </div>
 
     <div class="text-right font-bold mt-4">
-      Total: ${{ totalPagos }}
+      Total: ${{ totalPagos  | number:'1.0-0' }}
     </div>
   </div>
 </div>

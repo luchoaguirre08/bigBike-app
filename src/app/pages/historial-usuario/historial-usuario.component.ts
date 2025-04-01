@@ -23,7 +23,7 @@ export class HistorialUsuarioComponent {
     bikeModel: '',
     description: '',
     price: 0,
-    product: '',
+    servicios: [],
     imageUrl: '', // 👈 nuevo campo
     status: 'Pendiente',
   };
