@@ -27,8 +27,8 @@ export class ScheduleAppointmentComponent {
     date: '',
     bikeModel: '',
     description: '',
+    servicios: [] as { name: string; price: number; priceExtra?: number }[],
     price: 0,
-    product: '',
     imageUrl: '', // 👈 nuevo campo
     status: 'Pendiente',
   };
@@ -37,21 +37,32 @@ export class ScheduleAppointmentComponent {
   historialCliente: any;
   // Lista de productos
   products = [
-    { name: 'Mantenimiento suspensión', price: 50000 },
-    { name: 'Cambio pastillas', price: 25000 },
-    { name: 'Diagnóstico general' }, // sin precio
+    { name: 'Mantenimiento de suspensión delantera', price: 90000 },
+    { name: 'Mantenimiento de suspensión trasera', price: 95000 },
+    { name: 'Purgado de frenos hidráulicos', price: 60000 },
+    { name: 'Cambio de pastillas de freno', price: 30000 },
+    { name: 'Ajuste de frenos mecánicos', price: 25000 },
+    { name: 'Mantenimiento Command Post', price: 85000 },
+    { name: 'Cambio de líquido de frenos', price: 40000 },
+    { name: 'Inspección completa de frenos y suspensión', price: 100000 },
   ];
+
   get isFormValid(): boolean {
-    const { name, phone, date, bikeModel, product, price } = this.form;
+    const { name, phone, date, bikeModel, servicios, price } = this.form;
     return (
-      !!name && !!phone && !!date && !!bikeModel && !!product && price !== null
+      !!name &&
+      !!phone &&
+      !!date &&
+      !!bikeModel &&
+      !!servicios &&
+      price !== null
     );
   }
   constructor(private appointmentService: AppointmentService) {}
-  onProductChange() {
-    const selected = this.products.find((p) => p.name === this.form.product);
-    this.form.price = selected?.price ?? 0;
-  }
+  // onProductChange() {
+  //   const selected = this.servicios.find((p) => p.name === this.form.servicios);
+  //   this.form.price = selected?.price ?? 0;
+  // }
 
   async submit(appointmentForm: NgForm) {
     const { isConfirmed } = await Swal.fire({
@@ -118,31 +129,32 @@ export class ScheduleAppointmentComponent {
     }
   }
 
-  // historialCliente: Appointment[] = [];
+  toggleServicio(p: any, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
 
-  // onQrScanned(documentId: string) {
-  //   this.form.cedula = documentId; // ✅ Llena el campo
-  //   this.form.name = documentId;
-  //   this.form.phone = documentId;
-  //   this.appointmentService
-  //     .getClientHistory(documentId)
-  //     .then((appointments) => {
-  //       if (appointments.length > 0) {
-  //         const last = appointments[appointments.length - 1];
-  //         this.form.name = last.name;
-  //         this.form.phone = last.phone;
-  //         this.form.bikeModel = last.bikeModel;
+    if (checked) {
+      this.form.servicios.push(p);
+    } else {
+      this.form.servicios = this.form.servicios.filter(
+        (s) => s.name !== p.name
+      );
+    }
 
-  //         this.historialCliente = appointments;
-  //       } else {
-  //         Swal.fire(
-  //           '⚠️ No se encontró historial',
-  //           'Este cliente aún no tiene citas registradas',
-  //           'info'
-  //         );
-  //       }
-  //     });
-  // }
+    this.calcularPrecioTotal();
+  }
+
+  calcularPrecioTotal() {
+    const serviciosTotal = this.form.servicios.reduce(
+      (total, s) => total + s.price,
+      0
+    );
+
+    const extra = this.form.priceExtra || 0;
+
+    this.form.price = serviciosTotal + extra;
+  }
+
   onQrScanned(documentId: string) {
     try {
       const cliente = JSON.parse(documentId);
@@ -169,4 +181,6 @@ export class ScheduleAppointmentComponent {
       Swal.fire('❌ Error', 'El código QR no es válido', 'error');
     }
   }
+
+
 }

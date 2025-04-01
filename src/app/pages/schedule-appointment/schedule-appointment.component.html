@@ -11,11 +11,7 @@
 <div>
   <div class="flex items-center gap-2 border rounded px-3 py-2"
        [ngClass]="{ 'border-red-500': cedula.invalid && cedula.touched }">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-  <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd" />
-</svg>
-
-
+ <i class="fa-solid fa-id-card"></i>
     <input
       class="flex-1 outline-none"
       placeholder="Documento de identidad"
@@ -23,6 +19,7 @@
       name="cedula"
       required
       #cedula="ngModel"
+       [disabled]="true"
     />
   </div>
   <p *ngIf="cedula.invalid && cedula.touched" class="text-red-500 text-sm mt-1">
@@ -34,11 +31,9 @@
       <div class="flex items-center gap-2 border rounded px-3 py-2"
            [ngClass]="{ 'border-red-500': name.invalid && name.touched }">
         <!-- Icono -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z" />
-        </svg>
+        <i class="fa-solid fa-user"></i>
 
-        <input class="flex-1 outline-none" placeholder="Nombre" [(ngModel)]="form.name" name="name" required #name="ngModel" />
+        <input class="flex-1 outline-none" placeholder="Nombre" [(ngModel)]="form.name" name="name" required #name="ngModel"  [disabled]="true" />
       </div>
       <p *ngIf="name.invalid && name.touched" class="text-red-500 text-sm mt-1">El nombre es obligatorio.</p>
     </div>
@@ -48,11 +43,9 @@
       <div class="flex items-center gap-2 border rounded px-3 py-2"
            [ngClass]="{ 'border-red-500': phone.invalid && phone.touched }">
         <!-- Icono -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z" clip-rule="evenodd" />
-        </svg>
+        <i class="fa-solid fa-phone"></i>
 
-        <input class="flex-1 outline-none" placeholder="Celular" [(ngModel)]="form.phone" name="phone" required #phone="ngModel" />
+        <input class="flex-1 outline-none" placeholder="Celular" [(ngModel)]="form.phone" name="phone" required #phone="ngModel"  [disabled]="true"/>
       </div>
       <p *ngIf="phone.invalid && phone.touched" class="text-red-500 text-sm mt-1">El celular es obligatorio.</p>
     </div>
@@ -62,10 +55,7 @@
       <div class="flex items-center gap-2 border rounded px-3 py-2"
            [ngClass]="{ 'border-red-500': date.invalid && date.touched }">
         <!-- Icono -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-  <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
-  <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-</svg>
+        <i class="fa-solid fa-calendar-days"></i>
 
 
         <input type="date" class="flex-1 outline-none" [(ngModel)]="form.date" name="date" required #date="ngModel" />
@@ -78,11 +68,7 @@
       <div class="flex items-center gap-2 border rounded px-3 py-2"
            [ngClass]="{ 'border-red-500': bikeModel.invalid && bikeModel.touched }">
         <!-- Icono -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-  <path d="M13.024 9.25c.47 0 .827-.433.637-.863a4 4 0 0 0-4.094-2.364c-.468.05-.665.576-.43.984l1.08 1.868a.75.75 0 0 0 .649.375h2.158ZM7.84 7.758c-.236-.408-.79-.5-1.068-.12A3.982 3.982 0 0 0 6 10c0 .884.287 1.7.772 2.363.278.38.832.287 1.068-.12l1.078-1.868a.75.75 0 0 0 0-.75L7.839 7.758ZM9.138 12.993c-.235.408-.039.934.43.984a4 4 0 0 0 4.094-2.364c.19-.43-.168-.863-.638-.863h-2.158a.75.75 0 0 0-.65.375l-1.078 1.868Z" />
-  <path fill-rule="evenodd" d="m14.13 4.347.644-1.117a.75.75 0 0 0-1.299-.75l-.644 1.116a6.954 6.954 0 0 0-2.081-.556V1.75a.75.75 0 0 0-1.5 0v1.29a6.954 6.954 0 0 0-2.081.556L6.525 2.48a.75.75 0 1 0-1.3.75l.645 1.117A7.04 7.04 0 0 0 4.347 5.87L3.23 5.225a.75.75 0 1 0-.75 1.3l1.116.644A6.954 6.954 0 0 0 3.04 9.25H1.75a.75.75 0 0 0 0 1.5h1.29c.078.733.27 1.433.556 2.081l-1.116.645a.75.75 0 1 0 .75 1.298l1.117-.644a7.04 7.04 0 0 0 1.523 1.523l-.645 1.117a.75.75 0 1 0 1.3.75l.644-1.116a6.954 6.954 0 0 0 2.081.556v1.29a.75.75 0 0 0 1.5 0v-1.29a6.954 6.954 0 0 0 2.081-.556l.645 1.116a.75.75 0 0 0 1.299-.75l-.645-1.117a7.042 7.042 0 0 0 1.523-1.523l1.117.644a.75.75 0 0 0 .75-1.298l-1.116-.645a6.954 6.954 0 0 0 .556-2.081h1.29a.75.75 0 0 0 0-1.5h-1.29a6.954 6.954 0 0 0-.556-2.081l1.116-.644a.75.75 0 0 0-.75-1.3l-1.117.645a7.04 7.04 0 0 0-1.524-1.523ZM10 4.5a5.475 5.475 0 0 0-2.781.754A5.527 5.527 0 0 0 5.22 7.277 5.475 5.475 0 0 0 4.5 10a5.475 5.475 0 0 0 .752 2.777 5.527 5.527 0 0 0 2.028 2.004c.802.458 1.73.719 2.72.719a5.474 5.474 0 0 0 2.78-.753 5.527 5.527 0 0 0 2.001-2.027c.458-.802.719-1.73.719-2.72a5.475 5.475 0 0 0-.753-2.78 5.528 5.528 0 0 0-2.028-2.002A5.475 5.475 0 0 0 10 4.5Z" clip-rule="evenodd" />
-</svg>
-
+        <i class="fa-solid fa-bicycle"></i>
 
         <input class="flex-1 outline-none" placeholder="Modelo bicicleta" [(ngModel)]="form.bikeModel" name="bikeModel" required #bikeModel="ngModel" />
       </div>
@@ -90,61 +76,33 @@
     </div>
 
     <!-- Producto -->
-    <div>
-      <div class="flex items-center gap-2 border rounded px-3 py-2"
-           [ngClass]="{ 'border-red-500': product.invalid && product.touched }">
-        <!-- Icono -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-        <path fill-rule="evenodd" d="M14.5 10a4.5 4.5 0 0 0 4.284-5.882c-.105-.324-.51-.391-.752-.15L15.34 6.66a.454.454 0 0 1-.493.11 3.01 3.01 0 0 1-1.618-1.616.455.455 0 0 1 .11-.494l2.694-2.692c.24-.241.174-.647-.15-.752a4.5 4.5 0 0 0-5.873 4.575c.055.873-.128 1.808-.8 2.368l-7.23 6.024a2.724 2.724 0 1 0 3.837 3.837l6.024-7.23c.56-.672 1.495-.855 2.368-.8.096.007.193.01.291.01ZM5 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" clip-rule="evenodd" />
-        <path d="M14.5 11.5c.173 0 .345-.007.514-.022l3.754 3.754a2.5 2.5 0 0 1-3.536 3.536l-4.41-4.41 2.172-2.607c.052-.063.147-.138.342-.196.202-.06.469-.087.777-.067.128.008.257.012.387.012ZM6 4.586l2.33 2.33a.452.452 0 0 1-.08.09L6.8 8.214 4.586 6H3.309a.5.5 0 0 1-.447-.276l-1.7-3.402a.5.5 0 0 1 .093-.577l.49-.49a.5.5 0 0 1 .577-.094l3.402 1.7A.5.5 0 0 1 6 3.31v1.277Z" />
-      </svg>
-
-
-        <select class="flex-1 bg-transparent outline-none text-gray-700" [(ngModel)]="form.product" name="product" required #product="ngModel">
-          <option disabled selected value="">Selecciona un servicio</option>
-          <option *ngFor="let p of products" [value]="p.name">{{ p.name }} - ${{ p.price }}</option>
-        </select>
-      <!-- <select
-  [(ngModel)]="form.product"
-  name="product"
-  required
-  #product="ngModel"
-  (change)="onProductChange()"
->
-  <option disabled selected value="">Selecciona un producto</option>
-  <option *ngFor="let p of products" [ngValue]="p">
-    {{ p.name }} - ${{ p.price || 0 }}
-  </option>
-</select> -->
-
-
-      </div>
-      <p *ngIf="product.invalid && product.touched" class="text-red-500 text-sm mt-1">Selecciona una opción.</p>
+    <!-- Servicios principales (selección múltiple) -->
+<div>
+  <label class="block mb-1 font-medium text-gray-700">Selecciona los servicios</label>
+  <div class="space-y-2 border rounded px-3 py-2">
+    <div *ngFor="let p of products">
+      <label class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          [value]="p"
+          (change)="toggleServicio(p, $event)"
+          class="accent-blue-600"
+        />
+        {{ p.name }} - ${{ p.price | number:'1.0-0' }}
+      </label>
     </div>
+  </div>
+</div>
+
 
     <!-- Precio -->
-    <div>
-      <div class="flex items-center gap-2 border rounded px-3 py-2"
-           [ngClass]="{ 'border-red-500': price.invalid && price.touched }">
-        <!-- Icono -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-  <path d="M10.75 10.818v2.614A3.13 3.13 0 0 0 11.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 0 0-1.138-.432ZM8.33 8.62c.053.055.115.11.184.164.208.16.46.284.736.363V6.603a2.45 2.45 0 0 0-.35.13c-.14.065-.27.143-.386.233-.377.292-.514.627-.514.909 0 .184.058.39.202.592.037.051.08.102.128.152Z" />
-  <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-6a.75.75 0 0 1 .75.75v.316a3.78 3.78 0 0 1 1.653.713c.426.33.744.74.925 1.2a.75.75 0 0 1-1.395.55 1.35 1.35 0 0 0-.447-.563 2.187 2.187 0 0 0-.736-.363V9.3c.698.093 1.383.32 1.959.696.787.514 1.29 1.27 1.29 2.13 0 .86-.504 1.616-1.29 2.13-.576.377-1.261.603-1.96.696v.299a.75.75 0 1 1-1.5 0v-.3c-.697-.092-1.382-.318-1.958-.695-.482-.315-.857-.717-1.078-1.188a.75.75 0 1 1 1.359-.636c.08.173.245.376.54.569.313.205.706.353 1.138.432v-2.748a3.782 3.782 0 0 1-1.653-.713C6.9 9.433 6.5 8.681 6.5 7.875c0-.805.4-1.558 1.097-2.096a3.78 3.78 0 0 1 1.653-.713V4.75A.75.75 0 0 1 10 4Z" clip-rule="evenodd" />
-</svg>
-
-
-        <input
-          type="number"
-          class="flex-1 outline-none"
-          placeholder="Precio"
-          [(ngModel)]="form.price"
-          name="price"
-          required
-          #price="ngModel"
-        />
-      </div>
-      <p *ngIf="price.invalid && price.touched" class="text-red-500 text-sm mt-1">El precio es obligatorio.</p>
-    </div>
+    <div class="flex items-center gap-2 border rounded px-3 py-2">
+        <label class="block mb-1 font-medium text-gray-700">Total a pagar</label>
+  <i class="fa-solid fa-money-bill-wave"></i>
+  <span class="text-sm text-gray-900 whitespace-nowrap">
+    ${{ form.price | number:'1.0-0' }}
+  </span>
+</div>
 <div>
   <label class="block mb-1 font-medium text-gray-700">Foto de la bicicleta (opcional)</label>
   <input
@@ -164,17 +122,27 @@
     <div class="border rounded px-3 py-2">
       <textarea class="w-full outline-none" rows="3" placeholder="Descripción (opcional)" [(ngModel)]="form.description" name="description"></textarea>
     </div>
+ <!-- Precio -->
+    <div class="flex items-center gap-2 border rounded px-3 py-2">
+  <i class="fa-solid fa-money-bill-wave"></i>
+ <input
+  type="number"
+  class="flex-1 outline-none"
+  placeholder="Cobro extra (Opcional)"
+  [(ngModel)]="form.priceExtra"
+  (ngModelChange)="calcularPrecioTotal()"
+  name="priceExtra"
+  #priceExtra="ngModel"
+/>
 
+</div>
     <!-- Botón -->
     <button
       type="submit"
       [disabled]="!appointmentForm.valid"
       class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-           stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 4v16m8-8H4" />
-      </svg>
+      <i class="fa-solid fa-square-plus"></i>
       Agendar cita
     </button>
 
