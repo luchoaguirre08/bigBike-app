@@ -75,17 +75,38 @@
       <p *ngIf="bikeModel.invalid && bikeModel.touched" class="text-red-500 text-sm mt-1">El modelo es obligatorio.</p>
     </div>
 
-    <!-- Producto -->
-    <!-- Servicios principales (selección múltiple) -->
+
+<!-- Tipo de bicicleta -->
 <div>
-  <label class="block mb-1 font-medium text-gray-700">Selecciona los servicios</label>
+  <label class="block mb-1 font-medium text-gray-700">Selecciona el tipo de bicicleta</label>
+<select
+  class="w-full border rounded px-3 py-2"
+  [(ngModel)]="form.typeBicycle"
+  (ngModelChange)="onTypeBicycleChange($event)"
+  name="typeBicycle"
+  required
+  #typeBicycle="ngModel"
+>
+  <option disabled value="">-- Selecciona una opción --</option>
+  <option *ngFor="let type of typesBicycle" [value]="type">{{ type }}</option>
+</select>
+
+  <p *ngIf="typeBicycle.invalid && typeBicycle.touched" class="text-red-500 text-sm mt-1">
+    Este campo es obligatorio.
+  </p>
+</div>
+
+
+
+<!-- Servicios para bicicleta de montaña -->
+<div *ngIf="isMontanaSelected()">
+  <label class="block mb-1 font-medium text-gray-700">Servicios Montaña</label>
   <div class="space-y-2 border rounded px-3 py-2">
     <div *ngFor="let p of products">
       <label class="flex items-center gap-2">
         <input
           type="checkbox"
-          [checked]="form.servicios.includes(p)"
-          [value]="p"
+         [checked]="isServicioSeleccionado(p)"
           (change)="toggleServicio(p, $event)"
           class="accent-blue-600"
         />
@@ -94,6 +115,25 @@
     </div>
   </div>
 </div>
+
+<!-- Servicios para bicicleta de ruta -->
+<div *ngIf="isRutaSelected()" class="mt-4">
+  <label class="block mb-1 font-medium text-gray-700">Servicios Ruta</label>
+  <div class="space-y-2 border rounded px-3 py-2">
+    <div *ngFor="let a of productsRuta">
+      <label class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          [checked]="isServicioSeleccionado(a)"
+          (change)="toggleServicio(a, $event)"
+          class="accent-blue-600"
+        />
+        {{ a.name }} - ${{ a.price | number:'1.0-0' }}
+      </label>
+    </div>
+  </div>
+</div>
+
 
 
     <!-- Precio -->
