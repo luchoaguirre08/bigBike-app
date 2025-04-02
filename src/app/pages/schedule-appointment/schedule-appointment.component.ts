@@ -27,33 +27,82 @@ export class ScheduleAppointmentComponent {
     date: '',
     bikeModel: '',
     description: '',
-    servicios: [] as { name: string; price: number; priceExtra?: number }[],
+    servicios: [] as {
+      id: string;
+      name: string;
+      price: number;
+      priceExtra?: number;
+    }[],
     price: 0,
+    typeBicycle: [],
     imageUrl: '', // 👈 nuevo campo
     status: 'Pendiente',
   };
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   storage = getStorage(); // Esto crea una instancia del Storage
   historialCliente: any;
   // Lista de productos
   products = [
-    { name: 'Mantenimiento de suspensión delantera', price: 90000 },
-    { name: 'Mantenimiento de suspensión trasera', price: 95000 },
-    { name: 'Purgado de frenos hidráulicos', price: 60000 },
-    { name: 'Cambio de pastillas de freno', price: 30000 },
-    { name: 'Ajuste de frenos mecánicos', price: 25000 },
-    { name: 'Mantenimiento Command Post', price: 85000 },
-    { name: 'Cambio de líquido de frenos', price: 40000 },
-    { name: 'Inspección completa de frenos y suspensión', price: 100000 },
+    { id: 'mt-001', name: 'Mantenimiento general', price: 100000 },
+    {
+      id: 'mt-002',
+      name: 'Mantenimiento preventivo de suspensión delantera',
+      price: 45000,
+    },
+    {
+      id: 'mt-003',
+      name: 'Mantenimiento preventivo de suspensión trasera',
+      price: 45000,
+    },
+    {
+      id: 'mt-004',
+      name: 'Mantenimiento completo de suspensión delantera',
+      price: 90000,
+    },
+    {
+      id: 'mt-005',
+      name: 'Mantenimiento completo de suspensión trasera',
+      price: 160000,
+    },
+    { id: 'mt-006', name: 'Mantenimiento Command Post (básico)', price: 40000 },
+    { id: 'mt-007', name: 'Mantenimiento tensor', price: 30000 },
+    { id: 'mt-008', name: 'Mantenimiento basculante', price: 60000 },
+    { id: 'mt-009', name: 'Mantenimiento de frenos (c/u)', price: 40000 },
+    { id: 'mt-010', name: 'Mantenimiento pedales', price: 40000 },
+    { id: 'mt-011', name: 'Purga de frenos hidráulicos', price: 8000 },
+    { id: 'mt-012', name: 'Puesta a punto', price: 40000 },
+    { id: 'mt-013', name: 'Recarga tubeles', price: 15000 },
+    {
+      id: 'mt-014',
+      name: 'Mantenimiento general + preventivo suspensión delantera',
+      price: 130000,
+    },
+    { id: 'mt-015', name: 'Otros', price: 0 },
   ];
 
+  productsRuta = [
+    { id: 'rt-001', name: 'Mantenimiento general', price: 80000 },
+    { id: 'rt-002', name: 'Mantenimiento tensor', price: 30000 },
+    { id: 'rt-003', name: 'Mantenimiento de frenos (c/u)', price: 40000 },
+    { id: 'rt-004', name: 'Mantenimiento pedales', price: 40000 },
+    { id: 'rt-005', name: 'Purga de frenos hidráulicos', price: 8000 },
+    { id: 'rt-006', name: 'Puesta a punto', price: 40000 },
+    { id: 'rt-007', name: 'Recarga tubeles', price: 10000 },
+    { id: 'rt-008', name: 'Otros', price: 0 },
+  ];
+
+  typesBicycle = ['Ruta', 'Montaña'];
+
   get isFormValid(): boolean {
-    const { name, phone, date, bikeModel, servicios, price } = this.form;
+    const { name, phone, date, bikeModel, servicios, price, typeBicycle } =
+      this.form;
     return (
       !!name &&
       !!phone &&
       !!date &&
       !!bikeModel &&
+      !!typeBicycle &&
       !!servicios &&
       price !== null
     );
@@ -128,7 +177,6 @@ export class ScheduleAppointmentComponent {
       console.error('Error al subir la imagen', error);
     }
   }
-
   toggleServicio(p: any, event: Event) {
     const input = event.target as HTMLInputElement;
     const checked = input.checked;
@@ -136,12 +184,35 @@ export class ScheduleAppointmentComponent {
     if (checked) {
       this.form.servicios.push(p);
     } else {
-      this.form.servicios = this.form.servicios.filter(
-        (s) => s.name !== p.name
-      );
+      this.form.servicios = this.form.servicios.filter((s) => s.id !== p.id);
     }
 
     this.calcularPrecioTotal();
+  }
+
+  onTypeBicycleChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const selectedValue = select.value;
+
+    this.form.typeBicycle = [selectedValue];
+
+    // Limpia servicios y precio
+    this.form.servicios = [];
+    this.form.price = 0;
+
+    // No es necesario asignar a `this.products` si ya estás usando products y productsRuta separados en la vista.
+  }
+  isServicioSeleccionado(servicio: any): boolean {
+  return this.form.servicios.some((s) => s.id === servicio.id);
+}
+
+
+  isRutaSelected() {
+    return this.form.typeBicycle?.includes('Ruta');
+  }
+
+  isMontanaSelected() {
+    return this.form.typeBicycle?.includes('Montaña');
   }
 
   calcularPrecioTotal() {
@@ -181,6 +252,4 @@ export class ScheduleAppointmentComponent {
       Swal.fire('❌ Error', 'El código QR no es válido', 'error');
     }
   }
-
-
 }
