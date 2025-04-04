@@ -18,3 +18,10 @@ interface Servicio {
   name: string;
   price: number;
 }
+
+export interface Citas{
+    name: string,
+     phone: string,
+     id: string,
+     qrUrl:string,
+}

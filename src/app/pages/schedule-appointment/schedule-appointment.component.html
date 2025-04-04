@@ -161,7 +161,7 @@
 </div>
     <!-- Descripción (opcional) -->
     <div class="border rounded px-3 py-2">
-      <textarea class="w-full outline-none" rows="3" placeholder="Descripción (opcional)" [(ngModel)]="form.description" name="description"></textarea>
+      <textarea class="w-full outline-none" rows="3" placeholder="Descripción (opcional) *Si hay descuento escribir el valor" [(ngModel)]="form.description" name="description"></textarea>
     </div>
  <!-- Precio -->
     <div class="flex items-center gap-2 border rounded px-3 py-2">
@@ -169,7 +169,7 @@
  <input
   type="number"
   class="flex-1 outline-none"
-  placeholder="Cobro extra (Opcional)"
+  placeholder="Cobro extra o descuento (Opcional)"
   [(ngModel)]="form.priceExtra"
   (ngModelChange)="calcularPrecioTotal()"
   name="priceExtra"
@@ -200,7 +200,12 @@
     <li *ngFor="let cita of historialCliente" class="border rounded p-2 bg-white shadow-sm">
       <p><strong>Nombre cliente:</strong> {{ cita.name }}</p>
       <p><strong>Fecha:</strong> {{ cita.date }}</p>
-      <p><strong>Servicio:</strong> {{ cita.product }}</p>
+      <p><strong>Servicios:</strong></p>
+<ul class="list-disc pl-5">
+  <li *ngFor="let servicio of cita.servicios">
+    {{ servicio.name }} - ${{ servicio.price | number:'1.0-0' }}
+  </li>
+</ul>
       <p *ngIf="cita.description"><strong>Descripción:</strong> {{ cita.description }}</p>
       <p><strong>Precio:</strong> ${{ cita.price }}</p>
       <p><strong>Estado:</strong> {{ cita.status }}</p>
@@ -209,5 +214,6 @@
 </div>
 
 </div>
+
 
 
