@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   email = '';
@@ -24,5 +25,8 @@ export class LoginComponent {
     } catch (err) {
       this.error = 'Credenciales inválidas';
     }
+  }
+  cerrarModal() {
+    this.router.navigate(['/']); // O redirige donde necesites
   }
 }
