@@ -5,50 +5,56 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { BuscarQrClienteComponent } from 'src/app/components/buscar-qr-cliente/buscar-qr-cliente.component';
+import { Citas } from 'src/app/models/appointment';
 
 @Component({
   selector: 'app-registro-cliente',
   standalone: true,
-  imports: [CommonModule, QrGeneratorComponent, FormsModule, BuscarQrClienteComponent],
+  imports: [
+    CommonModule,
+    QrGeneratorComponent,
+    FormsModule,
+    BuscarQrClienteComponent,
+  ],
   templateUrl: './registro-cliente.component.html',
   styles: [],
 })
 export class RegistroClienteComponent {
   db = getFirestore();
-  cliente = { name: '', phone: '', email: '', id: '' };
+  cliente: Citas = { name: '', phone: '', id: '', qrUrl: '' };
+
   documentoCliente = '';
-  showButtons: boolean=false;
+  showButtons: boolean = false;
   @ViewChild(QrGeneratorComponent) qrGen!: QrGeneratorComponent;
 
   async guardarCliente(form: NgForm) {
     const { isConfirmed } = await Swal.fire({
-    title: '¿Registrar cliente?',
-    text: 'Se generará un código QR con los datos del cliente.',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, guardar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-  });
+      title: '¿Registrar cliente?',
+      text: 'Se generará un código QR con los datos del cliente.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, guardar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    });
 
-  if (!isConfirmed) return;
-  const datosQR = {
+    if (!isConfirmed) return;
+    const datosQR = {
       id: this.cliente.id,
       name: this.cliente.name,
       phone: this.cliente.phone,
-      email: this.cliente.email,
     };
 
     this.documentoCliente = JSON.stringify(datosQR);
-this.showButtons=true;
+    this.showButtons = true;
     try {
-       await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const qrUrl = await this.qrGen.uploadQRToFirebase(this.cliente.id);
-console.log("url", qrUrl)
+      this.cliente.qrUrl = qrUrl || ''; // ✅ asignar directamente
+
       const clienteCompleto = {
         ...this.cliente,
-        qrUrl: qrUrl || '',
       };
 
       await setDoc(doc(this.db, 'clientes', this.cliente.id), clienteCompleto);
@@ -58,6 +64,87 @@ console.log("url", qrUrl)
       this.documentoCliente = '';
     } catch (error) {
       console.error('Error al guardar cliente:', error);
+    }
+  }
+  sendQRToWhatsApp(phone: string) {
+    if (!this.cliente.qrUrl) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Código QR aún no disponible',
+        text: 'Por favor, espera unos segundos mientras se genera el código QR.',
+      });
+      return;
+    }
+
+    const numero = phone;
+
+    const mensaje = encodeURIComponent(
+      `🚴‍♂️ ¡Hola ${this.cliente.name}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas: ${this.cliente.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+    );
+
+    const url = `https://wa.me/57${numero}?text=${mensaje}`;
+    window.open(url, '_blank');
+  }
+
+  printQR() {
+    const canvas = document.querySelector('qrcode canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const imageData = canvas.toDataURL('image/png');
+    const printWindow = window.open('', '_blank');
+
+    if (printWindow) {
+      const doc = printWindow.document;
+
+      doc.write(`
+      <html>
+        <head>
+          <title>Imprimir QR</title>
+          <style>
+            @media print {
+              body {
+                margin: 0;
+              }
+              img {
+                max-width: 100vw;
+                max-height: 100vh;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                display: block;
+                margin: 0 auto;
+              }
+            }
+            body {
+              margin: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background: white;
+            }
+            img {
+              max-width: 100%;
+              max-height: 100%;
+              object-fit: contain;
+            }
+          </style>
+        </head>
+        <body>
+          <img src="${imageData}" alt="Código QR" />
+        </body>
+      </html>
+    `);
+
+      doc.close();
+
+      // Esperar a que la imagen cargue antes de imprimir
+      printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+        // Opcional: cerrar después de imprimir
+        printWindow.onafterprint = () => printWindow.close();
+      };
     }
   }
 }

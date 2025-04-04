@@ -18,13 +18,24 @@
     <img [src]="qrUrl" alt="QR del Cliente" class="mx-auto w-40 mb-4 border rounded shadow" />
 
    <div class="flex justify-center">
+    <div class="flex justify-between gap-4"  *ngIf="qrUrl">
+
   <button
-    (click)="imprimirQR()"
+    (click)="printQR()"
     class="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform duration-300"
   >
    <i class="fa-solid fa-print"></i>
     Imprimir QR
   </button>
+ <button
+
+  (click)="sendQRToWhatsApp(phoneClient)"
+  class="flex items-center ms-2 gap-2 bg-gradient-to-r from-green-600 to-blue-600 hover:from-blue-900 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform duration-300"
+>
+  <i class="fa-solid fa-download"></i>
+  Enviar a WhatsApp
+</button>
+</div>
 </div>
   </div>
 </div>

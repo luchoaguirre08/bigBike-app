@@ -16,15 +16,17 @@ export class BuscarQrClienteComponent {
   documento = '';
   qrUrl = '';
   clienteNombre = '';
+  phoneClient = '';
 
   async buscarQR() {
     const ref = doc(this.db, 'clientes', this.documento);
     const snap = await getDoc(ref);
 
     if (snap.exists()) {
-      const data = snap.data() as { qrUrl: string; name: string }; // 👈 Indicamos el tipo esperado
+      const data = snap.data() as { qrUrl: string; name: string; phone:string }; // 👈 Indicamos el tipo esperado
       this.qrUrl = data.qrUrl;
       this.clienteNombre = data.name;
+      this.phoneClient = data.phone
     } else {
       this.qrUrl = '';
       this.clienteNombre = '';
@@ -32,7 +34,7 @@ export class BuscarQrClienteComponent {
     }
   }
 
-  imprimirQR() {
+  printQR() {
     if (!this.qrUrl) return;
 
     const printWindow = window.open('', '_blank');
@@ -84,18 +86,23 @@ export class BuscarQrClienteComponent {
     }
   }
 
-  descargarQR() {
-    if (!this.qrUrl) return;
+ sendQRToWhatsApp(phone: string) {
+     if (!this.qrUrl) {
+       Swal.fire({
+         icon: 'info',
+         title: 'Código QR aún no disponible',
+         text: 'Por favor, espera unos segundos mientras se genera el código QR.',
+       });
+       return;
+     }
 
-    // Abre el QR en una nueva pestaña
-    window.open(this.qrUrl, '_blank');
+     const numero = phone;
 
-    // Muestra alerta con instrucciones
-    Swal.fire({
-      icon: 'info',
-      title: 'Imagen abierta',
-      text: 'Haz clic derecho sobre la imagen y selecciona "Guardar como..." para descargarla.',
-      confirmButtonText: 'Entendido',
-    });
-  }
+     const mensaje = encodeURIComponent(
+       `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas: ${this.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+     );
+
+     const url = `https://wa.me/57${numero}?text=${mensaje}`;
+     window.open(url, '_blank');
+   }
 }
