@@ -78,8 +78,9 @@ export class RegistroClienteComponent {
     const numero = phone;
 
     const mensaje = encodeURIComponent(
-      `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\nGracias por registrarte en Big Bike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.ultimoClienteRegistrado.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+      `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\nGracias por registrarte en Big Bike Workshop.\n\nAquí tienes tu código QR para futuras citas:\n[🔗 Código QR](${this.ultimoClienteRegistrado.qrUrl})\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
     );
+
 
     const url = `https://wa.me/57${numero}?text=${mensaje}`;
     window.open(url, '_blank');
