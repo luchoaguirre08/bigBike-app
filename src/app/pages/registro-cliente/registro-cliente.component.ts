@@ -22,7 +22,7 @@ import { Citas } from 'src/app/models/appointment';
 export class RegistroClienteComponent {
   db = getFirestore();
   cliente: Citas = { name: '', phone: '', id: '', qrUrl: '' };
-
+  ultimoClienteRegistrado: Citas | null = null;
   documentoCliente = '';
   showButtons: boolean = false;
   @ViewChild(QrGeneratorComponent) qrGen!: QrGeneratorComponent;
@@ -58,8 +58,7 @@ export class RegistroClienteComponent {
       };
 
       await setDoc(doc(this.db, 'clientes', this.cliente.id), clienteCompleto);
-      console.log('Cliente guardado con QR', qrUrl);
-
+      this.ultimoClienteRegistrado = { ...clienteCompleto };
       form.resetForm();
       this.documentoCliente = '';
     } catch (error) {
@@ -79,7 +78,7 @@ export class RegistroClienteComponent {
     const numero = phone;
 
     const mensaje = encodeURIComponent(
-      `🚴‍♂️ ¡Hola ${this.cliente.name}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas: ${this.cliente.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+      `🚴‍♂️ ¡Hola ${this.cliente.name}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.cliente.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
     );
 
     const url = `https://wa.me/57${numero}?text=${mensaje}`;
