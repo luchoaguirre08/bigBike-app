@@ -66,7 +66,7 @@ export class RegistroClienteComponent {
     }
   }
   sendQRToWhatsApp(phone: string) {
-    if (!this.cliente.qrUrl) {
+    if (!this.cliente.qrUrl || !this.ultimoClienteRegistrado?.name) {
       Swal.fire({
         icon: 'info',
         title: 'Código QR aún no disponible',
@@ -78,7 +78,7 @@ export class RegistroClienteComponent {
     const numero = phone;
 
     const mensaje = encodeURIComponent(
-      `🚴‍♂️ ¡Hola ${this.cliente.name}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.cliente.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+      `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\nGracias por registrarte en Big Bike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.ultimoClienteRegistrado.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
     );
 
     const url = `https://wa.me/57${numero}?text=${mensaje}`;
