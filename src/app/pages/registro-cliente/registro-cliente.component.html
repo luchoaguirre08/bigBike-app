@@ -40,7 +40,7 @@
   </button>
  <button
 
-  (click)="sendQRToWhatsApp(cliente.phone)"
+  (click)="sendQRToWhatsApp(ultimoClienteRegistrado?.phone||'')"
   class="flex items-center ms-2 gap-2 bg-gradient-to-r from-green-600 to-blue-600 hover:from-blue-900 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform duration-300"
 >
   <i class="fa-solid fa-download"></i>

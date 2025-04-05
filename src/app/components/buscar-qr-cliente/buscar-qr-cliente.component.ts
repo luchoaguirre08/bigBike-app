@@ -99,7 +99,7 @@ export class BuscarQrClienteComponent {
      const numero = phone;
 
      const mensaje = encodeURIComponent(
-       `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas: ${this.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+       `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
      );
 
      const url = `https://wa.me/57${numero}?text=${mensaje}`;
