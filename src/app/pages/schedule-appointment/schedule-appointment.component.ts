@@ -203,9 +203,8 @@ export class ScheduleAppointmentComponent {
     // No es necesario asignar a `this.products` si ya estás usando products y productsRuta separados en la vista.
   }
   isServicioSeleccionado(servicio: any): boolean {
-  return this.form.servicios.some((s) => s.id === servicio.id);
-}
-
+    return this.form.servicios.some((s) => s.id === servicio.id);
+  }
 
   isRutaSelected() {
     return this.form.typeBicycle?.includes('Ruta');
@@ -251,5 +250,33 @@ export class ScheduleAppointmentComponent {
       console.error('QR inválido', error);
       Swal.fire('❌ Error', 'El código QR no es válido', 'error');
     }
+  }
+
+  leerImagenQR(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const image = new Image();
+      image.src = reader.result as string;
+      image.onload = async () => {
+        const { BrowserQRCodeReader } = await import('@zxing/browser');
+        const codeReader = new BrowserQRCodeReader();
+
+        try {
+          const result = await codeReader.decodeFromImageElement(image);
+          this.onQrScanned(result.getText());
+        } catch (err) {
+          console.error('No se pudo leer el QR', err);
+          Swal.fire(
+            '❌ Error',
+            'No se pudo leer el código QR de la imagen',
+            'error'
+          );
+        }
+      };
+    };
+    reader.readAsDataURL(file);
   }
 }

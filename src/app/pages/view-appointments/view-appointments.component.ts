@@ -46,6 +46,27 @@ export class ViewAppointmentsComponent {
       );
     }
   }
+  formatFecha(fecha: string | Date): string {
+    let dateObj: Date;
+
+    if (typeof fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+      const [year, month, day] = fecha.split('-').map(Number);
+      // month - 1 porque los meses en JavaScript van de 0 (enero) a 11 (diciembre)
+      dateObj = new Date(year, month - 1, day);
+    } else {
+      dateObj = new Date(fecha);
+    }
+
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    };
+
+    const formatted = new Intl.DateTimeFormat('es-CO', options).format(dateObj);
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  }
 
   actualizarPagosFiltrados() {
     this.pagos = this.appointments.filter((a) => {

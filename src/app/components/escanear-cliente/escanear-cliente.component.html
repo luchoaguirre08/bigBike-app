@@ -1,5 +1,5 @@
 <!-- Botón para activar el escáner -->
-<div class="flex justify-center mb-6">
+<div class="flex justify-center items-center">
   <button
     (click)="mostrarScanner = !mostrarScanner"
     class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform duration-300"
@@ -9,10 +9,7 @@
   </button>
 </div>
 
-
-
-<!-- Escáner QR -->
-<div class="w-50 flex justify-center" *ngIf="mostrarScanner">
+<div class="w-50 flex justify-center items-center mt-3" *ngIf="mostrarScanner">
   <zxing-scanner
     [formats]="formats"
     (scanSuccess)="onCodeResult($event)">

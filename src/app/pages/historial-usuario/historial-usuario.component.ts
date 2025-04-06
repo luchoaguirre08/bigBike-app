@@ -64,4 +64,53 @@ export class HistorialUsuarioComponent {
     this.mostrarModalImagen = false;
     this.imagenModalUrl = null;
   }
+
+  formatFecha(fecha: string | Date): string {
+    let dateObj: Date;
+
+    if (typeof fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+      const [year, month, day] = fecha.split('-').map(Number);
+      // month - 1 porque los meses en JavaScript van de 0 (enero) a 11 (diciembre)
+      dateObj = new Date(year, month - 1, day);
+    } else {
+      dateObj = new Date(fecha);
+    }
+
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    };
+
+    const formatted = new Intl.DateTimeFormat('es-CO', options).format(dateObj);
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  }
+  leerImagenQR(event: Event) {
+      const file = (event.target as HTMLInputElement)?.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const image = new Image();
+        image.src = reader.result as string;
+        image.onload = async () => {
+          const { BrowserQRCodeReader } = await import('@zxing/browser');
+          const codeReader = new BrowserQRCodeReader();
+
+          try {
+            const result = await codeReader.decodeFromImageElement(image);
+            this.onQrScanned(result.getText());
+          } catch (err) {
+            console.error('No se pudo leer el QR', err);
+            Swal.fire(
+              '❌ Error',
+              'No se pudo leer el código QR de la imagen',
+              'error'
+            );
+          }
+        };
+      };
+      reader.readAsDataURL(file);
+    }
 }
