@@ -98,12 +98,15 @@ export class BuscarQrClienteComponent {
 
      const numero = phone;
 
-    //  const mensaje = encodeURIComponent(
-    //    `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\nGracias por registrarte en BigBike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial: ${this.qrUrl}\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
-    //  );
  const mensaje = encodeURIComponent(
-   `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\nGracias por registrarte en Big Bike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial:\n[🔗 Código QR](${this.qrUrl})\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+   `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\n` +
+     `Gracias por registrarte en Big Bike Workshop.\n\n` +
+     `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
+     `[🔗 Código QR](${this.qrUrl})\n\n` +
+     `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
+     `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
  );
+
      const url = `https://wa.me/57${numero}?text=${mensaje}`;
      window.open(url, '_blank');
    }
