@@ -11,12 +11,19 @@
           *ngFor="let a of groupedAppointments['Pendiente']"
           class="p-4 m-2 rounded shadow border bg-gray-200 space-y-1"
         >
+         <div class="flex justify-center"> <p class="mb-3 flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full font-semibold shadow-sm w-fit">
+  <i class="fa-solid fa-calendar-day text-gray-800"></i>
+  {{ formatFecha(a.date) }}
+</p></div>
   <div class="flex items-start gap-4">
+
   <!-- Texto del pago -->
   <div class="flex-1">
+
+
    <p><strong>{{ a.name }}</strong></p>
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
-          <p> <strong>Fecha: </strong>  {{ a.date }}</p>
+
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
           <div>
             <strong>Servicios:</strong>
@@ -62,12 +69,15 @@
           *ngFor="let a of groupedAppointments['En progreso']"
           class="p-4  m-2 rounded shadow border bg-yellow-100 space-y-1"
         >
+         <div class="flex justify-center"> <p class="mb-3 flex items-center gap-2 bg-green-200 px-3 py-1 rounded-full font-semibold shadow-sm w-fit">
+  <i class="fa-solid fa-calendar-day text-gray-800"></i>
+  {{ formatFecha(a.date) }}
+</p></div>
           <div class="flex items-start gap-4">
   <!-- Texto del pago -->
    <div class="flex-1">
    <p><strong>{{ a.name }}</strong></p>
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
-          <p> <strong>Fecha: </strong>  {{ a.date }}</p>
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
          <div>
             <strong>Servicios:</strong>
@@ -113,12 +123,15 @@
           *ngFor="let a of groupedAppointments['Completado']"
           class="p-4 m-2  rounded shadow border bg-green-100 space-y-1"
         >
+         <div class="flex justify-center"> <p class="mb-3 flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full font-semibold shadow-sm w-fit">
+  <i class="fa-solid fa-calendar-day text-gray-800"></i>
+  {{ formatFecha(a.date) }}
+</p></div>
          <div class="flex items-start gap-4">
   <!-- Texto del pago -->
   <div class="flex-1">
    <p><strong>{{ a.name }}</strong></p>
           <p><strong>Bicicleta: </strong>{{ a.bikeModel }} </p>
-          <p> <strong>Fecha: </strong>  {{ a.date }}</p>
            <p> <strong>Celular: </strong>  {{ a.phone }}</p>
          <div>
             <strong>Servicios:</strong>
@@ -190,7 +203,7 @@
   <div class="flex-1">
     <p> <strong>Cliente: </strong> {{ pago.name }}  </p>
     <p><strong>Documento:</strong> {{ pago.cedula }}</p>
-    <p> <strong>Fecha:</strong> {{ pago.date }}</p>
+    <p> <strong>Fecha:</strong>   {{ formatFecha(pago.date) }}</p>
     <div>
             <strong>Servicios:</strong>
             <ul class="list-disc list-inside">
