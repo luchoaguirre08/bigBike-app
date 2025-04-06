@@ -78,8 +78,14 @@ export class RegistroClienteComponent {
     const numero = phone;
 
     const mensaje = encodeURIComponent(
-      `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\nGracias por registrarte en Big Bike Workshop.\n\nAquí tienes tu código QR para futuras citas y ver tu historial::\n[🔗 Código QR](${this.ultimoClienteRegistrado.qrUrl})\n\n✅ Guarda esta imagen para usarla en nuestros servicios.`
+      `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\n` +
+        `Gracias por registrarte en Big Bike Workshop.\n\n` +
+        `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
+        `[🔗 Código QR](${this.ultimoClienteRegistrado.qrUrl})\n\n` +
+        `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
+        `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
     );
+
 
 
     const url = `https://wa.me/57${numero}?text=${mensaje}`;
