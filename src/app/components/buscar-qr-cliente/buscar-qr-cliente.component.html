@@ -18,7 +18,7 @@
     <img [src]="qrUrl" alt="QR del Cliente" class="mx-auto w-40 mb-4 border rounded shadow" />
 
    <div class="flex justify-center">
-    <div class="flex justify-between gap-4"  *ngIf="qrUrl">
+    <div class="flex justify-between"  *ngIf="qrUrl">
 <div
   class="flex flex-wrap justify-center sm:justify-between gap-4 text-center"
   *ngIf="qrUrl"
@@ -31,16 +31,35 @@
     Imprimir
   </button>
 
-  <button
+  <!-- <button
     (click)="sendQRToWhatsApp(phoneClient)"
     class="flex-1 sm:flex-none flex justify-center items-center gap-2 min-w-[150px] bg-gradient-to-r from-green-600 to-blue-600 hover:from-blue-900 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:scale-105 active:scale-95 transition-transform duration-300"
   >
     <i class="fa-brands fa-whatsapp"></i>
     Enviar
-  </button>
+  </button> -->
 </div>
 
 </div>
+
 </div>
   </div>
+
+  <div *ngIf="qrUrl" class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
+  <button
+    (click)="enviarPorWhatsApp('personal')"
+    class="flex items-center gap-2 px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold shadow transition-transform duration-200 hover:scale-105"
+  >
+    <i class="fa-brands fa-whatsapp text-lg"></i>
+    WhatsApp Personal
+  </button>
+
+  <button
+    (click)="enviarPorWhatsApp('business')"
+    class="flex items-center gap-2 px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition-transform duration-200 hover:scale-105"
+  >
+    <i class="fa-solid fa-briefcase text-lg"></i>
+    WhatsApp Business
+  </button>
+</div>
 </div>
