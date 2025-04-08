@@ -4,6 +4,7 @@ import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import Swal from 'sweetalert2';
 import { EscanearClienteComponent } from 'src/app/components/escanear-cliente/escanear-cliente.component';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-historial-usuario',
@@ -27,31 +28,49 @@ export class HistorialUsuarioComponent {
     imageUrl: '', // 👈 nuevo campo
     status: 'Pendiente',
   };
-  onQrScanned(documentId: string) {
-    try {
-      const cliente = JSON.parse(documentId);
+  db = getFirestore();
+    async onQrScanned(documentId: string) {
 
-      this.form.cedula = cliente.id;
-      this.form.name = cliente.name;
-      this.form.phone = cliente.phone;
+      try {
+        const datosQR = JSON.parse(documentId);
+        const clienteId = datosQR.id;
 
-      this.appointmentService
-        .getClientHistory(cliente.id)
-        .then((appointments) => {
-          this.historialCliente = appointments;
+        const docRef = doc(this.db, 'clientes', clienteId);
+        const snap = await getDoc(docRef);
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Cliente encontrado',
-            text: `Se cargó la información de ${cliente.name} y su historial.`,
-            timer: 2500,
-            showConfirmButton: false,
-          });
-        });
-    } catch (error) {
-      Swal.fire('❌ Error', 'El código QR no es válido', 'error');
+        if (snap.exists()) {
+          const cliente = snap.data() as any;
+
+          this.form.cedula = cliente.id;
+          this.form.name = cliente.name;
+          this.form.phone = cliente.phone;
+
+          // Historial
+          this.appointmentService
+            .getClientHistory(cliente.id)
+            .then((appointments) => {
+              this.historialCliente = appointments;
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Cliente encontrado',
+                text: `Se cargó la información de ${cliente.name} y su historial.`,
+                timer: 2500,
+                showConfirmButton: false,
+              });
+            });
+        } else {
+          Swal.fire(
+            '❌ No encontrado',
+            'El cliente no existe en la base de datos.',
+            'warning'
+          );
+        }
+      } catch (error) {
+        console.error('QR inválido', error);
+        Swal.fire('❌ Error', 'El código QR no es válido', 'error');
+      }
     }
-  }
   imagenModalUrl: string | null = null;
   mostrarModalImagen = false;
 
