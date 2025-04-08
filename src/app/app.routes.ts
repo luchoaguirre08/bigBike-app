@@ -6,6 +6,7 @@ import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { RegistroClienteComponent } from './pages/registro-cliente/registro-cliente.component';
 import { HistorialUsuarioComponent } from './pages/historial-usuario/historial-usuario.component';
+import { ClientesRegistradosComponent } from './pages/clientes-registrados.component';
 
 export const routes: Routes = [
   // 🔁 Redirección al home
@@ -50,6 +51,11 @@ export const routes: Routes = [
   {
     path: 'citas',
     component: ViewAppointmentsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'clientes',
+    component: ClientesRegistradosComponent,
     canActivate: [authGuard],
   },
 

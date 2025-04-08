@@ -17,7 +17,11 @@ export class LoginComponent {
   error = '';
 
   constructor(private auth: AuthService, private router: Router) {}
-
+  ngOnInit() {
+    if (localStorage.getItem('auth') === 'true') {
+      this.router.navigate(['/']); // o donde quieras
+    }
+  }
   async submit() {
     try {
       await this.auth.login(this.email, this.password);

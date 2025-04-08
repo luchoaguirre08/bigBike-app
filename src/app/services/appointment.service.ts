@@ -6,6 +6,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getFirestore,
 } from 'firebase/firestore';
 import { db } from '../firebase.init'; // 👈 este es el Firestore inicializado
 import { Appointment } from '../models/appointment';
@@ -44,5 +45,12 @@ export class AppointmentService {
     return snapshot.docs
       .map((doc) => ({ id: doc.id, ...doc.data() } as Appointment))
       .filter((cita) => cita.cedula === documentId); // 👈 este campo lo debes tener
+  }
+
+  db = getFirestore();
+
+  async getClientes() {
+    const snapshot = await getDocs(collection(this.db, 'clientes'));
+    return snapshot.docs.map((doc) => doc.data());
   }
 }
