@@ -65,7 +65,31 @@ export class RegistroClienteComponent {
       console.error('Error al guardar cliente:', error);
     }
   }
-  sendQRToWhatsApp(phone: string) {
+  // sendQRToWhatsApp(phone: string) {
+  //   if (!this.cliente.qrUrl || !this.ultimoClienteRegistrado?.name) {
+  //     Swal.fire({
+  //       icon: 'info',
+  //       title: 'Código QR aún no disponible',
+  //       text: 'Por favor, espera unos segundos mientras se genera el código QR.',
+  //     });
+  //     return;
+  //   }
+
+  //   const numero = phone;
+
+  //   const mensaje = encodeURIComponent(
+  //     `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\n` +
+  //       `Gracias por registrarte en Big Bike Workshop.\n\n` +
+  //       `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
+  //       `[🔗 Código QR](${this.ultimoClienteRegistrado.qrUrl})\n\n` +
+  //       `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
+  //       `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
+  //   );
+
+  //   const url = `https://wa.me/57${numero}?text=${mensaje}`;
+  //   window.open(url, '_blank');
+  // }
+  enviarPorWhatsApp(tipo: 'personal' | 'business') {
     if (!this.cliente.qrUrl || !this.ultimoClienteRegistrado?.name) {
       Swal.fire({
         icon: 'info',
@@ -75,21 +99,24 @@ export class RegistroClienteComponent {
       return;
     }
 
-    const numero = phone;
+    const numero = this.ultimoClienteRegistrado.phone.replace(/\D/g, '');
 
     const mensaje = encodeURIComponent(
       `🚴‍♂️ ¡Hola ${this.ultimoClienteRegistrado.name}!\n\n` +
         `Gracias por registrarte en Big Bike Workshop.\n\n` +
         `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
-        `[🔗 Código QR](${this.ultimoClienteRegistrado.qrUrl})\n\n` +
+        `${this.ultimoClienteRegistrado.qrUrl}\n\n` +
         `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
         `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
     );
 
-
-
-    const url = `https://wa.me/57${numero}?text=${mensaje}`;
-    window.open(url, '_blank');
+    if (tipo === 'business') {
+      const intentUrl = `intent://send?phone=57${numero}&text=${mensaje}#Intent;package=com.whatsapp.w4b;scheme=smsto;end`;
+      window.location.href = intentUrl;
+    } else {
+      const url = `https://wa.me/57${numero}?text=${mensaje}`;
+      window.open(url, '_blank');
+    }
   }
 
   printQR() {

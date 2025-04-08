@@ -23,10 +23,14 @@ export class BuscarQrClienteComponent {
     const snap = await getDoc(ref);
 
     if (snap.exists()) {
-      const data = snap.data() as { qrUrl: string; name: string; phone:string }; // 👈 Indicamos el tipo esperado
+      const data = snap.data() as {
+        qrUrl: string;
+        name: string;
+        phone: string;
+      }; // 👈 Indicamos el tipo esperado
       this.qrUrl = data.qrUrl;
       this.clienteNombre = data.name;
-      this.phoneClient = data.phone
+      this.phoneClient = data.phone;
     } else {
       this.qrUrl = '';
       this.clienteNombre = '';
@@ -86,28 +90,58 @@ export class BuscarQrClienteComponent {
     }
   }
 
- sendQRToWhatsApp(phone: string) {
-     if (!this.qrUrl) {
-       Swal.fire({
-         icon: 'info',
-         title: 'Código QR aún no disponible',
-         text: 'Por favor, espera unos segundos mientras se genera el código QR.',
-       });
-       return;
-     }
+  //  sendQRToWhatsApp(phone: string) {
+  //      if (!this.qrUrl) {
+  //        Swal.fire({
+  //          icon: 'info',
+  //          title: 'Código QR aún no disponible',
+  //          text: 'Por favor, espera unos segundos mientras se genera el código QR.',
+  //        });
+  //        return;
+  //      }
 
-     const numero = phone;
+  //      const numero = phone;
 
- const mensaje = encodeURIComponent(
-   `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\n` +
-     `Gracias por registrarte en Big Bike Workshop.\n\n` +
-     `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
-     `[🔗 Código QR](${this.qrUrl})\n\n` +
-     `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
-     `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
- );
+  //  const mensaje = encodeURIComponent(
+  //    `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\n` +
+  //      `Gracias por registrarte en Big Bike Workshop.\n\n` +
+  //      `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
+  //      `[🔗 Código QR](${this.qrUrl})\n\n` +
+  //      `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
+  //      `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
+  //  );
 
-     const url = `https://wa.me/57${numero}?text=${mensaje}`;
-     window.open(url, '_blank');
-   }
+  //      const url = `https://wa.me/57${numero}?text=${mensaje}`;
+  //      window.open(url, '_blank');
+  //    }
+
+  enviarPorWhatsApp(tipo: 'personal' | 'business') {
+    if (!this.qrUrl || !this.clienteNombre) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Código QR aún no disponible',
+        text: 'Por favor, espera unos segundos mientras se genera el código QR.',
+      });
+      return;
+    }
+
+    const numero = this.phoneClient.replace(/\D/g, '');
+
+    const mensaje = encodeURIComponent(
+      `🚴‍♂️ ¡Hola ${this.clienteNombre}!\n\n` +
+        `Gracias por registrarte en Big Bike Workshop.\n\n` +
+        `Aquí tienes tu código QR para futuras citas y ver tu historial:\n` +
+        `${this.qrUrl}\n\n` +
+        `✅ Guarda esta imagen para usarla en nuestros servicios.\n\n` +
+        `🌐 También puedes visitarnos en: https://bigbikeworkshop.netlify.app/`
+    );
+
+    if (tipo === 'business') {
+      const intentUrl = `intent://send?phone=57${numero}&text=${mensaje}#Intent;package=com.whatsapp.w4b;scheme=smsto;end`;
+      window.location.href = intentUrl;
+    } else {
+      const url = `https://wa.me/57${numero}?text=${mensaje}`;
+      window.open(url, '_blank');
+    }
+  }
 }
