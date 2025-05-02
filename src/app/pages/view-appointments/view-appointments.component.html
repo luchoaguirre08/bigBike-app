@@ -11,10 +11,17 @@
           *ngFor="let a of groupedAppointments['Pendiente']"
           class="p-4 m-2 rounded shadow border bg-gray-200 space-y-1"
         >
-         <div class="flex justify-center"> <p class="mb-3 flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full font-semibold shadow-sm w-fit">
-  <i class="fa-solid fa-calendar-day text-gray-800"></i>
-  {{ formatFecha(a.date) }}
-</p></div>
+<div class="flex justify-between items-center mb-4">
+  <p class="flex items-center gap-2 bg-yellow-100 px-3 py-1 rounded-full font-semibold shadow-sm w-fit">
+    <i class="fa-solid fa-calendar-day text-gray-800"></i>
+    {{ formatFecha(a.date) }}
+  </p>
+
+  <button (click)="deleteAppointment(a)"class="bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-700">
+    <i class="fa-solid fa-trash"></i>
+  </button>
+</div>
+
   <div class="flex items-start gap-4">
 
   <!-- Texto del pago -->
@@ -50,9 +57,10 @@
   </div>
 </div>
 
-          <div class="space-x-2 mt-2">
-            <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded">En progreso</button>
-            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded">Completado</button>
+          <div class="flex flex-col lg:flex-row justify-center lg:space-x-2 mt-2 space-y-2 lg:space-y-0">
+            <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-wrench"></i> En progreso</button>
+            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-circle-check"></i> Completado</button>
+            <button (click)="openEditModal(a)" class="bg-blue-600 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-pencil"></i> Editar</button>
           </div>
         </div>
       </ng-container>
@@ -104,9 +112,11 @@
   </div>
 </div>
 
-          <div class="space-x-2 mt-2">
-            <button (click)="update(a, 'Pendiente')" class="bg-gray-500 text-white px-2 py-1 rounded">Pendiente</button>
-            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded">Completado</button>
+          <div class="flex flex-col lg:flex-row justify-center lg:space-x-2 mt-2 space-y-2 lg:space-y-0">
+            <button (click)="update(a, 'Pendiente')" class="bg-gray-500 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-hourglass-half"></i> Pendiente</button>
+            <button (click)="update(a, 'Completado')" class="bg-green-600 text-white px-2 py-1 rounded self-center"><i class="fa-solid fa-circle-check"></i> Completado</button>
+            <button (click)="openEditModal(a)" class="bg-blue-600 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-pencil"></i> Editar</button>
+
           </div>
         </div>
       </ng-container>
@@ -158,20 +168,26 @@
   </div>
 </div>
 
-          <div class="space-x-2 mt-2">
-            <button (click)="cobrar(a)" class="bg-blue-600 text-white px-2 py-1 rounded">Cobrar</button>
-            <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded">En progreso</button>
-            <button class="bg-green-600 text-white px-3 py-1 rounded" (click)="enviarWhatsapp(a.name, a.phone)">
-              Enviar WhatsApp
-            </button>
-          </div>
-        </div>
-      </ng-container>
-      <ng-template #sinCompletadas>
-        <p class="text-sm text-gray-400 text-center">No hay citas completadas.</p>
-      </ng-template>
-    </div>
-  </div>
+<div class="flex flex-col lg:flex-row justify-center lg:space-x-2 mt-2 space-y-2 lg:space-y-0">
+  <button class="bg-green-600 text-white px-3 py-1 rounded self-center" (click)="enviarWhatsapp(a.name, a.phone)">
+      <i class="fa-brands fa-whatsapp"></i> Enviar WhatsApp
+  </button>
+  <button (click)="update(a, 'En progreso')" class="bg-yellow-500 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-wrench"></i> En progreso</button>
+
+  <button (click)="cobrar(a)" class="bg-blue-600 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-money-bill-transfer"></i> Cobrar</button>
+<!-- <button (click)="openEditModal(a)" class="bg-blue-600 text-white px-2 py-1 rounded self-center"> <i class="fa-solid fa-pencil"></i> Editar</button> -->
+
+</div>
+
+
+
+</div>
+</ng-container>
+<ng-template #sinCompletadas>
+  <p class="text-sm text-gray-400 text-center">No hay citas completadas.</p>
+</ng-template>
+</div>
+</div>
 
 
 
@@ -262,3 +278,13 @@
     />
   </div>
 </div>
+
+
+
+
+<app-edit-appointment-modal
+  *ngIf="showModal"
+  [appointment]="editingAppointment"
+  (onClose)="closeModal()"
+  (onSave)="saveEditedAppointment($event)"
+></app-edit-appointment-modal>

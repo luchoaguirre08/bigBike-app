@@ -1,0 +1,190 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+    <!-- Botón de cierre -->
+    <button
+      class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl"
+      (click)="close()"
+      aria-label="Cerrar"
+    >
+      &times;
+    </button>
+
+    <h2 class="text-2xl font-bold mb-4">Editar Cita</h2>
+
+    <form (ngSubmit)="submit()" #form="ngForm">
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Cédula:</label>
+        <input
+          type="text"
+          [(ngModel)]="formData.cedula"
+          name="cedula"
+          class="w-full border p-2 rounded"
+          required
+          [disabled]="true"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Nombre:</label>
+        <input
+          type="text"
+          [(ngModel)]="formData.name"
+          name="name"
+          class="w-full border p-2 rounded"
+          required
+          [disabled]="true"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Teléfono:</label>
+        <input
+          type="text"
+          [(ngModel)]="formData.phone"
+          name="phone"
+          class="w-full border p-2 rounded"
+          required
+          [disabled]="true"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Fecha:</label>
+        <input
+          type="date"
+          [(ngModel)]="formData.date"
+          name="date"
+          class="w-full border p-2 rounded"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Modelo bicicleta:</label>
+        <input
+          type="text"
+          [(ngModel)]="formData.bikeModel"
+          name="bikeModel"
+          class="w-full border p-2 rounded"
+        />
+      </div>
+
+<!-- Tipo de bicicleta -->
+<div>
+  <label class="block mb-1 font-medium text-gray-700">Selecciona el tipo de bicicleta</label>
+<select
+  class="w-full border rounded px-3 py-2"
+  [(ngModel)]="formData.typeBicycle"
+  (ngModelChange)="onTypeBicycleChange($event)"
+  name="typeBicycle"
+  required
+  #typeBicycle="ngModel"
+>
+  <option disabled value="">-- Selecciona una opción --</option>
+  <option *ngFor="let type of typesBicycle" [value]="type">{{ type }}</option>
+</select>
+
+  <p *ngIf="typeBicycle.invalid && typeBicycle.touched" class="text-red-500 text-sm mt-1">
+    Este campo es obligatorio.
+  </p>
+</div>
+
+
+
+<!-- Servicios para bicicleta de montaña -->
+<div *ngIf="isMontanaSelected()">
+  <label class="block mb-1 font-medium text-gray-700">Servicios Montaña</label>
+  <div class="space-y-2 border rounded px-3 py-2">
+    <div *ngFor="let p of products">
+      <label class="flex items-center gap-2">
+        <input
+          type="checkbox"
+         [checked]="isServicioSeleccionado(p)"
+          (change)="toggleServicio(p, $event)"
+          class="accent-blue-600"
+        />
+        {{ p.name }} - ${{ p.price | number:'1.0-0' }}
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- Servicios para bicicleta de ruta -->
+<div *ngIf="isRutaSelected()" class="mt-4">
+  <label class="block mb-1 font-medium text-gray-700">Servicios Ruta</label>
+  <div class="space-y-2 border rounded px-3 py-2">
+    <div *ngFor="let a of productsRuta">
+      <label class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          [checked]="isServicioSeleccionado(a)"
+          (change)="toggleServicio(a, $event)"
+          class="accent-blue-600"
+        />
+        {{ a.name }} - ${{ a.price | number:'1.0-0' }}
+      </label>
+    </div>
+  </div>
+</div>
+
+
+
+      <!-- Precio -->
+    <div class="flex items-center gap-2 border rounded px-3 py-2">
+        <label class="block mb-1 font-medium text-gray-700">Total a pagar</label>
+  <i class="fa-solid fa-money-bill-wave"></i>
+  <span class="text-sm text-gray-900 whitespace-nowrap">
+    ${{ formData.price | number:'1.0-0' }}
+  </span>
+</div>
+
+       <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Cobro extra (Descuento):</label>
+        <input
+          type="number"
+          [(ngModel)]="formData.priceExtra"
+          name="priceExtra"
+          (ngModelChange)="calcularPrecioTotal()"
+          class="w-full border p-2 rounded"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Descripción:</label>
+        <textarea
+          [(ngModel)]="formData.description"
+          name="description"
+          rows="3"
+          class="w-full border p-2 rounded"
+        ></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-sm font-semibold">Imagen:</label>
+        <input type="file" (change)="onImageSelected($event)" />
+        <div *ngIf="previewImage" class="mt-2">
+          <img
+            [src]="previewImage"
+            alt="Preview"
+            class="max-w-full max-h-60 object-cover rounded"
+          />
+        </div>
+      </div>
+
+      <div class="flex justify-end mt-6 space-x-2">
+        <button
+          type="button"
+          class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+          (click)="close()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
