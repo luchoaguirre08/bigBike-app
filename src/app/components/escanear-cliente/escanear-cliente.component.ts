@@ -11,6 +11,12 @@ import { BarcodeFormat } from '@zxing/library';
 })
 export class EscanearClienteComponent {
   formats = [BarcodeFormat.QR_CODE];
+  videoConstraints = {
+    facingMode: { exact: 'environment' },
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+  };
+
   mostrarScanner = false;
   @Output() codeScanned = new EventEmitter<string>();
 
