@@ -16,7 +16,8 @@ export class EscanearClienteComponent {
     width: { ideal: 1280 },
     height: { ideal: 720 },
   };
-
+  availableDevices: MediaDeviceInfo[] = [];
+  currentDevice: MediaDeviceInfo | undefined;
   mostrarScanner = false;
   @Output() codeScanned = new EventEmitter<string>();
 
@@ -33,5 +34,18 @@ export class EscanearClienteComponent {
   }
   toggleScanner() {
     this.mostrarScanner = !this.mostrarScanner;
+  }
+
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
+    this.availableDevices = devices;
+
+    // Selecciona la primera cámara trasera que NO sea telefoto
+    const backCamera = devices.find(
+      (device) =>
+        device.label.toLowerCase().includes('back') &&
+        !device.label.toLowerCase().includes('tele')
+    );
+
+    this.currentDevice = backCamera || devices[0]; // fallback si no encuentra
   }
 }

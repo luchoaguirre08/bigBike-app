@@ -10,10 +10,12 @@
 </div>
 
 <div class="w-50 flex justify-center items-center mt-3" *ngIf="mostrarScanner">
-  <zxing-scanner
+<zxing-scanner
   [formats]="formats"
-  [videoConstraints]="videoConstraints"
+  [device]="currentDevice"
+  (camerasFound)="onCamerasFound($event)"
   (scanSuccess)="onCodeResult($event)">
 </zxing-scanner>
+
 
 </div>
