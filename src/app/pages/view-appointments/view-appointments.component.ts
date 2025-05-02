@@ -4,11 +4,14 @@ import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { EditAppointmentModalComponent } from 'src/app/components/edit-appointment-modal/edit-appointment-modal.component';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-appointments',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EditAppointmentModalComponent],
   templateUrl: './view-appointments.component.html',
   styleUrls: ['./view-appointments.component.css'],
 })
@@ -18,10 +21,13 @@ export class ViewAppointmentsComponent {
   estados = ['Pendiente', 'En progreso', 'Completado'];
   pagos: Appointment[] = [];
   mostrarPagos = false;
-
+  db = getFirestore();
   filtroMes: string; // formato: "YYYY-MM"
 
-  constructor(private appointmentService: AppointmentService) {
+  constructor(
+    private appointmentService: AppointmentService,
+    private _router: Router
+  ) {
     const hoy = new Date();
     this.filtroMes = `${hoy.getFullYear()}-${(hoy.getMonth() + 1)
       .toString()
@@ -148,6 +154,96 @@ export class ViewAppointmentsComponent {
           mensaje
         )}`;
         window.open(url, '_blank');
+      }
+    });
+  }
+
+  editingAppointment: any = null;
+  showModal = false;
+
+  openEditModal(appointment: any) {
+    this.editingAppointment = appointment;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.editingAppointment = null;
+    this.showModal = false;
+  }
+
+  saveEditedAppointment(data: any) {
+    if (!data.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Falta el ID',
+        text: 'No se pudo actualizar la cita porque falta el ID.',
+      });
+      return;
+    }
+
+    this.appointmentService
+      .updateAppointment(data)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Cita actualizada',
+          text: 'La cita se actualizó correctamente.',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        this.closeModal();
+        const currentUrl = this._router.url;
+        this._router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this._router.navigate([currentUrl]);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al actualizar la cita. Intenta de nuevo.',
+        });
+      });
+  }
+
+  deleteAppointment(data: any) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará la cita permanentemente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.appointmentService
+          .deleteAppointment(data.id)
+          .then(() => {
+            Swal.fire(
+              '✅ Eliminada',
+              'La cita se eliminó correctamente.',
+              'success'
+            );
+             const currentUrl = this._router.url;
+             this._router
+               .navigateByUrl('/', { skipLocationChange: true })
+               .then(() => {
+                 this._router.navigate([currentUrl]);
+               });
+          })
+          .catch((err) => {
+            console.error('Error al eliminar la cita:', err);
+            Swal.fire(
+              '❌ Error',
+              'Hubo un problema al eliminar la cita.',
+              'error'
+            );
+          });
       }
     });
   }
